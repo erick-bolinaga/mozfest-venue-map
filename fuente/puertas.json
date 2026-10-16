@@ -1,0 +1,107 @@
+{
+ "_leeme": "Which doors a route from A to B may use, and which floor each one opens on. Written by hand.",
+ "e-Main": {
+  "publica": true,
+  "nombre": "Main entrance"
+ },
+ "e-Secondary": {
+  "publica": true,
+  "nombre": "0 Back"
+ },
+ "e-viola-access": {
+  "publica": true,
+  "nombre": "Door"
+ },
+ "e-aster-main": {
+  "publica": true,
+  "nombre": "Main door"
+ },
+ "e-aster-la-tempesta-indoor-outdoor-access": {
+  "publica": true,
+  "nombre": "La Tempesta"
+ },
+ "e-aster-rebedor": {
+  "publica": false
+ },
+ "e-aster-espai1": {
+  "publica": false
+ },
+ "e-aster-espai3": {
+  "publica": false
+ },
+ "e-aster-distribuidor-2": {
+  "publica": false
+ },
+ "e-aster-sortida-building-b": {
+  "publica": false
+ },
+ "e-aster-sala-maquinaria-01": {
+  "publica": false
+ },
+ "e-aster-sala-maquinaria-02": {
+  "publica": false
+ },
+ "e-lotus-acces-recinte": {
+  "publica": true,
+  "nombre": "Main door"
+ },
+ "e-lotus-acces-camerinos": {
+  "publica": false
+ },
+ "e-lotus-acces-magatzem": {
+  "publica": false
+ },
+ "e-lotus-sortida-emergencia": {
+  "publica": false
+ },
+ "e-lotus-sortida-emergencia_2": {
+  "publica": false
+ },
+ "e-salvia-espai-vertical": {
+  "publica": true,
+  "nombre": "Main door"
+ },
+ "e-salvia-to-minus-1": {
+  "publica": true,
+  "nombre": "Side door, by the stairs down to level −1",
+  "hacia": "Basement"
+ },
+ "e-salvia-stairs-lift": {
+  "publica": true,
+  "nombre": "Stairs and lift",
+  "hacia": [
+   "Basement",
+   "Mezzanine 1",
+   "Mezzanine 2",
+   "Top floor"
+  ]
+ },
+ "e-fontanet-recinte": {
+  "publica": true,
+  "nombre": "Museum entrance",
+  "sirve": [
+   "b-mimosa-museum-can-fontanet"
+  ],
+  "plantas": {
+   "b-mimosa-museum-can-fontanet": {
+    "orden": "01.5",
+    "nombre": "Lobby"
+   }
+  }
+ },
+ "e-fontanet-parellada": {
+  "publica": false
+ },
+ "d0-main": {
+  "publica": true,
+  "nombre": "D0 Main",
+  "huecos": {
+   "volumen": "p-b-rosa-lobby-main",
+   "etiqueta": "lobby doorway"
+  },
+  "edificios": [
+   "b-rosa",
+   "b-rosa-lobby"
+  ]
+ }
+}
