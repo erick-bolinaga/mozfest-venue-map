@@ -1,0 +1,154 @@
+</style>
+</head>
+<body>
+
+<div class="topbar">
+<header class="brand">
+  __LOGO__
+  <div class="text">
+    <h1>MozFest 2026</h1>
+    <p>Recinte Fabra i Coats</p>
+  </div>
+</header>
+
+<!-- The two things you summon rather than steer. They sit up here because the
+     theme switch used to and it did not deserve the room: choosing a theme is
+     something you do once, finding a room is something you do all day. -->
+<nav class="shell topnav" aria-label="Viewer">
+  <button class="ico" id="searchBtn" aria-label="Search" aria-expanded="false" title="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.7" cy="10.7" r="6.3"/><path d="M15.4 15.4 20 20"/></svg></button>
+  <button class="ico" id="menuBtn" aria-label="Menu" aria-expanded="false" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5h16M4 12h16M4 16.5h16"/></svg></button>
+</nav>
+</div>
+
+<nav class="shell dock" aria-label="Map controls">
+  <div class="seg" id="viewSeg">
+    <button data-view="2d" aria-pressed="false">2D</button>
+    <button data-view="3d" aria-pressed="true">3D</button>
+  </div>
+  <button class="ico" id="resetBtn" aria-label="Reset map" title="Reset map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.3"/><circle cx="12" cy="12" r="7.9"/><path d="M12 2.4v2.5M12 19.1v2.5M2.4 12h2.5M19.1 12h2.5"/></svg></button>
+</nav>
+
+<!-- The route card. It rises from the bottom like the sheet it replaces while
+     a route is up: from where, to where — each one changeable — and the one or
+     two lines that are all the directions anyone needs outside. The line on the
+     map does the turning. -->
+<section class="shell route" id="route" hidden aria-live="polite" aria-label="Route">
+  <div class="route-head">
+    <p class="route-a">Directions</p>
+    <button class="ico" id="routeClose" aria-label="Clear route" title="Clear route"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <button class="route-from" id="routeFromBtn"><span class="k">From</span><span class="name" id="routeFromName">Main entrance</span><span class="change">Change</span></button>
+  <button class="route-to" id="routeToBtn" data-empty><span class="k">To</span><span class="name" id="routeToName">Choose destination</span><span class="change">Change</span></button>
+  <ol class="route-steps" id="routeText"></ol>
+</section>
+
+<div class="shell pop" id="menu">
+  <!-- For everyone: a route where both ends are yours to pick. routes.js puts
+       the same sign in it that the cards' button carries. -->
+  <button class="row" id="routeMenuBtn"><span class="label">Go from A to B</span><span class="glyph"></span></button>
+  <button class="row" id="zoneBtn" aria-pressed="false">Zones<span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"><path d="M4.5 12.5 9.5 17.5 19.5 7"/></svg></span></button>
+  <button class="row" id="roBtn" aria-pressed="true">Camera readout<span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"><path d="M4.5 12.5 9.5 17.5 19.5 7"/></svg></span></button>
+  <button class="row" id="crewBtn" aria-pressed="false">Place volunteers<span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"><path d="M4.5 12.5 9.5 17.5 19.5 7"/></svg></span></button>
+  <div class="rule"></div>
+  <button class="row" id="fsBtn" aria-pressed="false"><span class="label">Full screen</span><span class="glyph"><svg class="enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg><svg class="exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5"/></svg></span></button>
+  <button class="row" id="themeBtn" role="switch" aria-checked="false">Light theme<span class="switch"></span></button>
+  <div class="row">
+    <span>Text size</span>
+    <span class="steps">
+      <button id="uiDown" aria-label="Smaller text">&#8722;</button>
+      <span id="uiVal">100%</span>
+      <button id="uiUp" aria-label="Larger text">+</button>
+    </span>
+  </div>
+</div>
+
+<div class="shell pop" id="search">
+  <input id="q" type="search" placeholder="e.g. Espai Vertical" autocomplete="off" spellcheck="false">
+  <div id="results"></div>
+</div>
+
+<!-- Placing volunteers. It exists only for the organiser, and is removed from
+     the DOM for everyone else: not hidden, because .pop would not cover it and
+     because a list of stations you can read without being able to touch it is
+     not half a feature, it is a leak. -->
+<div class="shell pop" id="crew">
+  <p class="pop-head">Place volunteers</p>
+  <p class="crew-hint">Tap open ground on the 2D map for a spot outside. For one inside, tap the building, pick its floor and tap the room. Drag a post to move it.</p>
+  <!-- The list is folded on a phone, where the panel covers the map being
+       tapped; the two buttons always stay in view. -->
+  <details id="crewDetails">
+    <summary id="crewSummary">Nothing placed yet</summary>
+    <div id="crewList"></div>
+    <pre id="crewJson" hidden></pre>
+  </details>
+  <div class="crew-actions">
+    <button id="crewSave">Download stations.json</button>
+    <button id="crewCopy">Copy</button>
+  </div>
+</div>
+
+<!-- The detail panel is a sheet: it rises over the map, dims what is behind it,
+     and scrolls whatever does not fit. Two detents, because half a map is often
+     exactly what you want to keep looking at while you read about the other
+     half. Opened with show() and not showModal() — see the CSS for why. -->
+<dialog class="sheet" id="sheet" aria-label="Details">
+  <div class="sheet-panel" data-detent="medium">
+    <div class="sheet-handle"><button class="sheet-grabber" aria-label="Toggle sheet height"></button></div>
+    <button class="ico sheet-close" data-sheet-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="sheet-body" data-sheet-body></div>
+    <!-- The room rises INSIDE the building's sheet rather than over it: it is a
+         child of this panel, so closing the sheet takes it along and there is no
+         second scrim to get wrong. Its ceiling is the top of .tabpanel, which
+         keeps the building, its tabs and the floor you are on in view the whole
+         time. It sits here and not in the card because info() and retab()
+         rewrite the card whole, and an element that is rebuilt cannot
+         transition — it would jump. -->
+    <div class="roomsheet" inert>
+      <button class="ico room-close" data-room-close aria-label="Close room"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <div class="roomsheet-body" data-room-body></div>
+    </div>
+    <!-- The bubble for the rooms that are only a way through. It hangs off the
+         panel and not off the plan because the card scrolls, and anything
+         absolute inside a scrolling box is clipped by it. -->
+    <div class="roomtip" data-on="false" role="status"></div>
+  </div>
+</dialog>
+
+<!-- The same bubble as the pass-through rooms', but hung off the site instead
+     of the plan. It lives loose in the page and not inside the sheet because in
+     this case the sheet never opens: the answer IS the bubble. -->
+<div class="worldtip" data-on="false" role="status"></div>
+
+<div class="corner">
+  <!-- `hidden` from the start, and it is the JS that turns it on with ?dev=1 —
+       never the other way round. This panel used to be hidden only from
+       showReadout(), which runs after the megabyte of Three.js embedded below:
+       between the browser painting the markup and getting there, the
+       view-composing instrument peeked out in the corner for EVERYONE, not only
+       in dev mode. Erick saw it on 2026-09-19. The default state of something
+       almost nobody should see is stated here, where it costs nothing, and not
+       after parsing a megabyte. -->
+  <div class="shell" id="readout" hidden>
+    <div class="ro">
+      <span>heading</span><b id="roYaw">—</b>
+      <span>tilt</span><b id="roPitch">—</b>
+      <span>zoom</span><b id="roDist">—</b>
+      <span>centre</span><b id="roCtr">—</b>
+      <span>base</span><b id="roBase">—</b>
+    </div>
+    <code id="roCode">—</code>
+    <!-- The same view in the shape views.json takes, named for whatever is
+         selected. Compose a view for a building and this is the line to paste. -->
+    <code id="roView">—</code>
+    <button id="roCopy">Copy</button>
+  </div>
+  <p class="hud"></p>
+</div>
+
+<!-- Mozilla Headline and Mozilla Text: Copyright 2025 The Mozilla Headline /
+     Mozilla Text Project Authors, Studio DRAMA. IBM Plex Mono: Copyright IBM
+     Corp. All three are licensed under the SIL Open Font License 1.1, whose
+     full text ships beside the sources in src/vendor/OFL-*.txt and at
+     openfontlicense.org . The faces are embedded in this file. -->
+<script>__THREE_JS__</script>
+<script>

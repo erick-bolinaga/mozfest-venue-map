@@ -1,0 +1,191 @@
+{
+ "_readme": "Festival kit not traced in map.svg, in model metres. Written by hand: an entry with the id of a traced piece replaces it, and one with 'retired': true removes it.",
+ "items": [
+  {
+   "id": "wikipedia-car",
+   "label": "Wikipedia Car",
+   "kind": "art",
+   "h": 1.6,
+   "poly": [
+    [
+     230.98,
+     95.51
+    ],
+    [
+     231.74,
+     89.55
+    ],
+    [
+     234.71,
+     89.93
+    ],
+    [
+     233.96,
+     95.89
+    ]
+   ]
+  },
+  {
+   "id": "art-auto",
+   "label": "Art Auto",
+   "kind": "art",
+   "h": 1.6,
+   "poly": [
+    [
+     164.27,
+     162.26
+    ],
+    [
+     169.45,
+     165.28
+    ],
+    [
+     167.94,
+     167.87
+    ],
+    [
+     162.76,
+     164.85
+    ]
+   ]
+  },
+  {
+   "id": "photocall",
+   "label": "Photocall",
+   "kind": "social",
+   "h": 2.4,
+   "poly": [
+    [
+     215.0,
+     123.47
+    ],
+    [
+     217.96,
+     123.94
+    ],
+    [
+     217.8,
+     124.93
+    ],
+    [
+     214.84,
+     124.46
+    ]
+   ]
+  },
+  {
+   "id": "art-installation-main-stage",
+   "label": "Art installation",
+   "kind": "art",
+   "room": "r-01-b-rosa-main-stage"
+  },
+  {
+   "id": "ev-art-tent (Firefox House)",
+   "label": "Open Source House",
+   "kind": "art",
+   "h": 4.5,
+   "poly": [
+    [
+     143.77,
+     180.88
+    ],
+    [
+     121.33,
+     190.96
+    ],
+    [
+     117.27,
+     181.93
+    ],
+    [
+     139.71,
+     171.85
+    ]
+   ]
+  },
+  {
+   "id": "ev-doha-debates",
+   "label": "Doha Debates",
+   "kind": "session",
+   "h": 4.0,
+   "poly": [
+    [
+     121.15,
+     165.21
+    ],
+    [
+     119.81,
+     172.29
+    ],
+    [
+     114.03,
+     171.2
+    ],
+    [
+     115.37,
+     164.11
+    ]
+   ]
+  },
+  {
+   "id": "ev-art-gallery",
+   "label": "Art Gallery",
+   "kind": "art",
+   "h": 3.0,
+   "poly": [
+    [
+     116.89,
+     156.43
+    ],
+    [
+     131.13,
+     159.07
+    ],
+    [
+     130.04,
+     164.89
+    ],
+    [
+     115.82,
+     162.25
+    ]
+   ]
+  },
+  {
+   "id": "ev-overflow-main-stage",
+   "label": "Overflow main stage",
+   "kind": "stage",
+   "h": 1.0,
+   "poly": [
+    [
+     138.35,
+     162.87
+    ],
+    [
+     140.15,
+     153.2
+    ],
+    [
+     159.55,
+     156.81
+    ],
+    [
+     157.75,
+     166.48
+    ]
+   ]
+  },
+  {
+   "id": "ev-domo (Domo Session Room)",
+   "retired": true
+  },
+  {
+   "id": "ev-giant-games-1",
+   "retired": true
+  },
+  {
+   "id": "ev-giant-games-2",
+   "retired": true
+  }
+ ]
+}

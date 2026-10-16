@@ -1,0 +1,393 @@
+{
+  "_readme": "The venue as the Mozilla Festival names it (A1, B3, D4...), mapped onto what was traced. Written by hand.",
+  "zones": {
+    "A": {
+      "name": "Zona A",
+      "contains": [
+        "entrance-0",
+        "building-A"
+      ]
+    },
+    "B": {
+      "name": "Zona B",
+      "contains": [
+        "building-B",
+        "C2"
+      ]
+    },
+    "C": {
+      "name": "Zona C",
+      "contains": [
+        "C1"
+      ]
+    },
+    "D": {
+      "name": "Zona D",
+      "contains": [
+        "building-D"
+      ]
+    },
+    "E": {
+      "name": "Zona E",
+      "contains": [
+        "building-E",
+        "C3",
+        "C4",
+        "C5"
+      ]
+    },
+    "F": {
+      "name": "Zona F",
+      "contains": [
+        "building-F",
+        "building-G"
+      ]
+    }
+  },
+  "buildings": {
+    "0": {
+      "name": "Main Entrance",
+      "zone": "A",
+      "building": "b-main-entrance-access-control",
+      "part": null,
+      "entrances": [
+        "e-Main",
+        "e-Secondary"
+      ]
+    },
+    "A": {
+      "name": "FC ESCACS (Chess)",
+      "zone": "A",
+      "building": "b-viola",
+      "part": "p-b-viola-bomberos"
+    },
+    "B": {
+      "name": "L'Harmonia",
+      "zone": "B",
+      "building": "b-aster",
+      "part": "p-b-aster-harmonia"
+    },
+    "C": {
+      "name": "Outside",
+      "zone": null,
+      "building": null,
+      "part": null
+    },
+    "D": {
+      "name": "La Fabrica de Creacio",
+      "zone": "D",
+      "building": "b-rosa",
+      "part": "p-b-rosa-main"
+    },
+    "E": {
+      "name": "Espai Bota",
+      "zone": "E",
+      "building": "b-lotus",
+      "part": "p-b-lotus-hall"
+    },
+    "F": {
+      "name": "Espai Vertical",
+      "zone": "F",
+      "building": "b-salvia",
+      "part": "p-b-salvia-espai-vertical"
+    },
+    "G": {
+      "name": "Can Fontanet / Museum",
+      "zone": "F",
+      "building": "b-mimosa-museum-can-fontanet",
+      "part": "b-mimosa-museum-can-fontanet",
+      "also": [
+        "b-lobby-hall-can-fontanet"
+      ]
+    }
+  },
+  "spaces": {
+    "A0": {
+      "name": "Foyer / Access",
+      "room": "r-01-b-viola-viola-access",
+      "certainty": "propuesto"
+    },
+    "A1": {
+      "name": "Session Room",
+      "capacity": "80 pax theatre",
+      "room": "r-01-b-viola-viola-room",
+      "certainty": "confirmado"
+    },
+    "A2": {
+      "name": "Session Room",
+      "capacity": "20 boardroom",
+      "room": "r-01-b-viola-viola-lab",
+      "certainty": "confirmado"
+    },
+    "B0": {
+      "name": "La Tempesta",
+      "capacity": "150 aprox",
+      "room": [
+        "r-01-b-aster-la-tempesta-comedor",
+        "r-01-b-aster-la-tempesta-indoor-scenary",
+        "r-01-b-aster-la-tempesta-kitchen"
+      ],
+      "kit": [
+        "ev-stage (La Tempesta Outdoor Terrace)"
+      ],
+      "certainty": "confirmado"
+    },
+    "B1": {
+      "name": "Arrels",
+      "capacity": "40 pax cabaret",
+      "floor": "First floor",
+      "room": "r-02-b-aster-aula-3-aula-4-aster-lab",
+      "certainty": "confirmado"
+    },
+    "B2": {
+      "name": "Escolta",
+      "capacity": "40 pax theatre",
+      "floor": "First floor",
+      "room": "r-02-b-aster-aula-9",
+      "certainty": "confirmado"
+    },
+    "B3": {
+      "name": "Lluis Maria Xirinachs",
+      "capacity": "12 boardroom o 40 theatre",
+      "floor": "Second floor",
+      "room": "r-03-b-aster-aula-2-aster-workshop",
+      "certainty": "confirmado"
+    },
+    "B4": {
+      "name": "Stage (Joe Forga)",
+      "capacity": "95 pax max",
+      "room": "r-04-b-aster-aula-gran",
+      "certainty": "confirmado",
+      "floor": "Third floor"
+    },
+    "C1": {
+      "name": "Badge Pickup & Info Point",
+      "zone": "C",
+      "kit": [
+        "m-accreditation-point"
+      ],
+      "certainty": "confirmado"
+    },
+    "C2": {
+      "name": "Music Stage",
+      "zone": "B",
+      "kit": [
+        "ev-stage"
+      ],
+      "certainty": "confirmado"
+    },
+    "C3": {
+      "name": "Open Source House",
+      "zone": "E",
+      "kit": [
+        "ev-art-tent (Firefox House)",
+        "ev-giant-games-3"
+      ],
+      "certainty": "confirmado"
+    },
+    "C4": {
+      "name": "Doha Debates",
+      "zone": "E",
+      "certainty": "propuesto",
+      "kit": [
+        "ev-doha-debates"
+      ]
+    },
+    "C5": {
+      "name": "The Art Gallery",
+      "zone": "E",
+      "kit": [
+        "ev-art-gallery"
+      ],
+      "certainty": "confirmado"
+    },
+    "C-merch": {
+      "name": "Merch Store",
+      "zone": "C",
+      "kit": [
+        "m-merch-store"
+      ]
+    },
+    "C-coffee": {
+      "name": "Coffee Station",
+      "zone": "C",
+      "kit": [
+        "ev-coffee-station-1"
+      ]
+    },
+    "C-food": {
+      "name": "Food Village",
+      "zone": "B",
+      "kit": [
+        "ev-food-truck-1",
+        "ev-food-truck-2",
+        "ev-food-truck-3",
+        "ev-food-truck-4",
+        "ev-food-truck-5",
+        "ev-bar"
+      ]
+    },
+    "D5": {
+      "name": "Main Stage",
+      "capacity": "626 aprox (562 con visibilidad, 64 sin)",
+      "floor": "Ground floor",
+      "room": "r-01-b-rosa-main-stage",
+      "certainty": "confirmado"
+    },
+    "D0": {
+      "name": "Entrances",
+      "room": "r-01-b-rosa-lobby-outdoor-access",
+      "volume": "p-b-rosa-lobby-main",
+      "kit": [
+        "ev-staff-office"
+      ],
+      "certainty": "confirmado",
+      "area": [
+        "a-backyard-corridor",
+        "a-backyard-back"
+      ]
+    },
+    "D1": {
+      "name": "Private Lounge",
+      "floor": "Ground floor",
+      "room": "r-01-b-rosa-firefox-house",
+      "certainty": "confirmado"
+    },
+    "D2": {
+      "name": "Space - Art, Booths and MozFest Library",
+      "room": "r-01-b-rosa",
+      "certainty": "confirmado"
+    },
+    "D3": {
+      "name": "Stage (Sala Assaig 1)",
+      "capacity": "152 pax (128 theatre + 24 cabaret)",
+      "floor": "Third floor",
+      "room": "r-03-b-rosa-workshop",
+      "certainty": "confirmado"
+    },
+    "D4": {
+      "name": "Sala d'Actes (Art Center)",
+      "capacity": "70-77 theatre sin el pasillo central",
+      "floor": "Third floor",
+      "room": "r-03-b-rosa-sala-actes",
+      "certainty": "confirmado"
+    },
+    "E0": {
+      "name": "Vestibule / Foyer",
+      "room": "r-01-b-lotus-vestibule",
+      "certainty": "confirmado"
+    },
+    "E1": {
+      "name": "Stage",
+      "capacity": "280 theatre",
+      "room": "r-01-b-lotus-main-hall",
+      "certainty": "confirmado"
+    },
+    "F1": {
+      "name": "Art Space",
+      "floor": "Ground floor + Mezzanine",
+      "room": [
+        "r-02-b-salvia-art-space",
+        "r-03-b-salvia-art-experience"
+      ],
+      "certainty": "confirmado"
+    },
+    "F2": {
+      "name": "Session Room",
+      "capacity": "16 pax session room",
+      "floor": "Basement",
+      "room": "r-01-b-salvia-middle-room",
+      "certainty": "confirmado"
+    },
+    "F3": {
+      "name": "Art Space",
+      "floor": "Basement",
+      "room": null,
+      "certainty": "confirmado-como-par",
+      "unordered_pair": [
+        "r-01-b-salvia-room-1",
+        "r-01-b-salvia-room-2"
+      ]
+    },
+    "F4": {
+      "name": "Art Space",
+      "floor": "Basement",
+      "room": null,
+      "certainty": "confirmado-como-par",
+      "unordered_pair": [
+        "r-01-b-salvia-room-1",
+        "r-01-b-salvia-room-2"
+      ]
+    },
+    "F-production": {
+      "name": "Production Office",
+      "capacity": "28 puestos de trabajo",
+      "room": "r-05-b-salvia-production-office",
+      "certainty": "confirmado"
+    },
+    "G0": {
+      "name": "Reception",
+      "room": "r-01-b-lobby-hall-can-fontanet",
+      "certainty": "confirmado"
+    },
+    "G1": {
+      "name": "Session Room",
+      "capacity": "50 theatre",
+      "floor": "First floor",
+      "room": "r-02-b-fontanet-session-room",
+      "certainty": "confirmado"
+    },
+    "G2": {
+      "name": "Space",
+      "floor": "Level -1",
+      "room": "r-01-b-fontanet-carriage-hall",
+      "certainty": "propuesto"
+    },
+    "D4.0": {
+      "name": "Foyer C4",
+      "floor": "Third floor",
+      "room": null,
+      "certainty": "por-resolver"
+    },
+    "0": {
+      "name": "Main Access (Entrance 0)",
+      "zone": "A",
+      "volume": "b-main-entrance-access-control",
+      "entrances": [
+        "e-Main",
+        "e-Secondary"
+      ],
+      "certainty": "confirmado"
+    },
+    "F0": {
+      "name": "Door (Espai Vertical)",
+      "floor": "Ground floor",
+      "entrances": [
+        "e-salvia-espai-vertical",
+        "e-salvia-stairs-lift",
+        "e-salvia-to-minus-1"
+      ],
+      "certainty": "confirmado"
+    },
+    "D-family": {
+      "name": "Family Space",
+      "kit": [
+        "ev-parents & babies"
+      ]
+    },
+    "D-quiet": {
+      "name": "Quiet Reflection & Silent Prayer Space",
+      "kit": [
+        "ev-quiet-office & prayer space",
+        "ev-quiet-office & prayer space_2",
+        "ev-quiet-office & prayer space_3",
+        "ev-quiet-office & prayer space_4"
+      ]
+    }
+  },
+  "programme": {
+    "Music Stage": {
+      "place": "ev-stage"
+    }
+  }
+}

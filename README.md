@@ -11,29 +11,29 @@ printed map is the official one.
 
 ## Build
 
-    cd fuente
-    python3 armar.py --publico      # -> dist/publico/index.html, the public map
+    cd src
+    python3 build.py --public      # -> dist/public/index.html, the public map
 
 The page is a single HTML file with everything embedded (Three.js, fonts,
 data): it makes no network request, sets no cookie and needs no server. If
-`fuente/vendor/` is missing, `python3 traer-dependencias.py` fetches it once.
-`python3 armar.py` builds the full viewer as `fabraicoats-3d.html`.
+`src/vendor/` is missing, `python3 fetch-vendor.py` fetches it once.
+`python3 build.py` builds the full viewer as `fabraicoats-3d.html`.
 
 ## How the model is made
 
-The venue was traced in Figma and exported as `fuente/mapa.svg`; the
-`leer-*.py` readers turn its layers into `modelo.json` (volumes, roofs,
+The venue was traced in Figma and exported as `src/map.svg`; the
+`read-*.py` readers turn its layers into `model.json` (volumes, roofs,
 facades, floors, rooms, the festival's set-up), and hand-written JSON adds
-what a drawing cannot say (heights, windows, names). `armar.py` joins the 23
-pieces of `fuente/visor/` with the data into one page and checks it.
+what a drawing cannot say (heights, windows, names). `build.py` joins the 23
+pieces of `src/viewer/` with the data into one page and checks it.
 
 ## Tests
 
-    python3 herramientas/probar-rutas.py
-    herramientas/con-chrome.sh node herramientas/medir-publico.js
-    herramientas/con-chrome.sh node herramientas/medir-rutas.js
+    python3 tools/test-grid.py
+    tools/with-chrome.sh node tools/check-public.js
+    tools/with-chrome.sh node tools/check-routes.js
 
-The browser checks need Chrome; `con-chrome.sh` runs it headless in its own
+The browser checks need Chrome; `with-chrome.sh` runs it headless in its own
 process group and closes it.
 
 ## Licence

@@ -156,7 +156,7 @@ sus ventanas se perdieron con el lector de geometría. Erick las echó en falta
 y se añadieron: una columna de cuatro, copiadas de la última columna de la
 fachada larga (2,78 × 4,43 m, arco 0,12, alféizares 1,13 / 7,47 / 13,81 /
 20,15) y centradas en el paño. **Una columna es suposición.** Viven en
-`fachadas.json` (muro `p-b-rosa-main` arista 1), como todas las demás.
+`facades.json` (muro `p-b-rosa-main` arista 1), como todas las demás.
 
 ## El lector de geometría, de vuelta (2026-09-14)
 
@@ -166,17 +166,17 @@ sobre el modelo, no se recordó:
 - **Huellas**: cada polígono se escala desde la media de sus vértices de modo
   que el radio medio crece 0,30 m. 48 de 50 volúmenes al milímetro; las dos
   partes de Viola se habían retocado a mano (5–7 cm) y `b-reference-d` traía
-  un par de vértices a 2 mm. `leer-volumenes.py` lo aplica; `volumenes.json`
+  un par de vértices a 2 mm. `read-volumes.py` lo aplica; `volumes.json`
   lleva lo que el SVG no sabe (altura, base, cubierta, pico, clase, nombre).
 - **Huecos**: cada uno está sobre la línea de su muro, en `a + u·(off + w/2)`,
   mirando por la normal exterior según el sentido del polígono. `push` se
   guarda y no se aplica (nunca se aplicó). 758 de 791 al milímetro; los 33 de
   Viola estaban a 11–22 cm de su muro desde el retoque, y ahora se derivan
-  sobre el muro de verdad. `fachadas.json` lleva cada muro `(vol, edge)` con
-  sus huecos y carpintería; `leer-fachadas.py` escribe `walls` y `openings`.
+  sobre el muro de verdad. `facades.json` lleva cada muro `(vol, edge)` con
+  sus huecos y carpintería; `read-facades.py` escribe `walls` y `openings`.
 - **Si una arista cambia** (otro número de vértices, un muro más corto que
   sus huecos, con 20 cm de holgura por las ventanas de esquina de Espai
-  Vertical), `leer-fachadas.py` para y dice cuál. Reasignar es de quien
+  Vertical), `read-facades.py` para y dice cuál. Reasignar es de quien
   traza.
 - El banco vigila desde entonces que cada agujero cabe en su muro y que cada
   hueco está a menos de 2 cm de la línea de un muro que mira hacia él.

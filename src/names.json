@@ -1,0 +1,69 @@
+{
+  "_readme": "What each building is called at the venue, and the festival key it answers to. Written by hand.",
+  "b-rosa": {
+    "site": "Fabra i Coats",
+    "key": "Building D"
+  },
+  "b-rosa-lobby": {
+    "site": "Main access Fabra i Coats",
+    "key": "D0 Main"
+  },
+  "b-mimosa-museum-can-fontanet": {
+    "site": "Museum Can Fontanet",
+    "key": "Building G"
+  },
+  "b-camamilla": {
+    "site": "Biblioteca Ignasi Iglésias - Can Fabra"
+  },
+  "b-lotus": {
+    "site": "Espai Bota",
+    "key": "Building E",
+    "alias": [
+      "La Bota"
+    ]
+  },
+  "b-viola": {
+    "site": "FC ESCACS",
+    "key": "Building A",
+    "alias": [
+      "Chess building"
+    ]
+  },
+  "b-citc": {
+    "site": "Centre d'Interpretació del Treball i la Ciutat"
+  },
+  "b-lobby-hall-can-fontanet": {
+    "site": "Lobby Can Fontanet",
+    "key": "Building G"
+  },
+  "p-b-salvia-nau": {
+    "site": "Habitatge Social Fabra i Coats"
+  },
+  "p-b-salvia-espai-vertical": {
+    "site": "Espai Vertical",
+    "key": "Building F"
+  },
+  "p-b-aster-harmonia": {
+    "site": "L'Harmonia",
+    "key": "Building B"
+  },
+  "p-b-aster-nau": {
+    "references": [
+      "Boiler room"
+    ]
+  },
+  "p-b-aster-tower": {
+    "references": [
+      "Institut Martí Pous"
+    ]
+  },
+  "b-main-entrance-access-control": {
+    "site": "Main entrance"
+  },
+  "b-adjacent-hall-escola-musica": {
+    "site": "Escola de Música hall"
+  },
+  "b-fontanet-garden-wall": {
+    "site": "Garden wall"
+  }
+}

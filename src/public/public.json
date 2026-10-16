@@ -1,0 +1,35 @@
+{
+  "_readme": "The public build (python3 build.py --public -> dist/public/index.html). 'notice' is what it says about itself; 'forbidden' is what the build refuses to publish: 'everywhere' words searched in the whole file, 'in_data' patterns searched in the embedded data.",
+  "notice": {
+    "short": "Unofficial map · approximate",
+    "long": "Unofficial map, made by a community volunteer. Sizes and positions are approximate and the festival set-up can still change: the printed map is the official one.",
+    "code_url": "",
+    "code_text": "Source code",
+    "credits": "Typefaces: Mozilla Headline, Mozilla Text and IBM Plex Mono, under the SIL Open Font License 1.1. 3D: three.js, MIT licence."
+  },
+  "rename": {},
+  "forbidden": {
+    "everywhere": [
+      "Despatx",
+      "Oficina"
+    ],
+    "in_data": [
+      "_readme",
+      "_pending",
+      "_leeme",
+      "_pendiente",
+      "\\bdeck\\b",
+      "book of answers",
+      "\\bcapit[aá]n",
+      "\\bvoluntari",
+      "\\binterna\\b",
+      "inventad",
+      "organizaci[oó]n",
+      "\\bconfirmar\\b",
+      "\\bpor confirmar\\b",
+      "\\bErick\\b",
+      "\\bojo\\b",
+      "\\b[A-G]\\d-\\d+\\b"
+    ]
+  }
+}

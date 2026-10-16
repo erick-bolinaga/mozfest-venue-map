@@ -1,0 +1,107 @@
+{
+ "_readme": "Which doors a route from A to B may use, and which floor each one opens on. Written by hand.",
+ "e-Main": {
+  "public": true,
+  "name": "Main entrance"
+ },
+ "e-Secondary": {
+  "public": true,
+  "name": "0 Back"
+ },
+ "e-viola-access": {
+  "public": true,
+  "name": "Door"
+ },
+ "e-aster-main": {
+  "public": true,
+  "name": "Main door"
+ },
+ "e-aster-la-tempesta-indoor-outdoor-access": {
+  "public": true,
+  "name": "La Tempesta"
+ },
+ "e-aster-rebedor": {
+  "public": false
+ },
+ "e-aster-espai1": {
+  "public": false
+ },
+ "e-aster-espai3": {
+  "public": false
+ },
+ "e-aster-distribuidor-2": {
+  "public": false
+ },
+ "e-aster-sortida-building-b": {
+  "public": false
+ },
+ "e-aster-sala-maquinaria-01": {
+  "public": false
+ },
+ "e-aster-sala-maquinaria-02": {
+  "public": false
+ },
+ "e-lotus-acces-recinte": {
+  "public": true,
+  "name": "Main door"
+ },
+ "e-lotus-acces-camerinos": {
+  "public": false
+ },
+ "e-lotus-acces-magatzem": {
+  "public": false
+ },
+ "e-lotus-sortida-emergencia": {
+  "public": false
+ },
+ "e-lotus-sortida-emergencia_2": {
+  "public": false
+ },
+ "e-salvia-espai-vertical": {
+  "public": true,
+  "name": "Main door"
+ },
+ "e-salvia-to-minus-1": {
+  "public": true,
+  "name": "Side door, by the stairs down to level −1",
+  "towards": "Basement"
+ },
+ "e-salvia-stairs-lift": {
+  "public": true,
+  "name": "Stairs and lift",
+  "towards": [
+   "Basement",
+   "Mezzanine 1",
+   "Mezzanine 2",
+   "Top floor"
+  ]
+ },
+ "e-fontanet-recinte": {
+  "public": true,
+  "name": "Museum entrance",
+  "serves": [
+   "b-mimosa-museum-can-fontanet"
+  ],
+  "floors": {
+   "b-mimosa-museum-can-fontanet": {
+    "order": "01.5",
+    "name": "Lobby"
+   }
+  }
+ },
+ "e-fontanet-parellada": {
+  "public": false
+ },
+ "d0-main": {
+  "public": true,
+  "name": "D0 Main",
+  "openings": {
+   "volume": "p-b-rosa-lobby-main",
+   "label": "lobby doorway"
+  },
+  "buildings": [
+   "b-rosa",
+   "b-rosa-lobby"
+  ]
+ }
+}

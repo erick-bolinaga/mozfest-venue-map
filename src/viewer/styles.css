@@ -1,0 +1,928 @@
+:root{
+  /* One number scales the whole interface. Every measurement in the chrome is
+     in rem, so moving this moves type, touch targets, padding and the gaps
+     between them together — which is the point: scaling only the text leaves
+     the buttons behind and the layout stops making sense.
+     The multiplicand is 1rem and NOT a fixed 16px. On the root element a rem
+     is not the circular reference it looks like: it resolves against the
+     property's INITIAL value, which is the reader's own browser font-size
+     setting. Measured in headless Chrome with that setting at 24px —
+     calc(16px * 1.25) computes to 20px and shrinks their text below what they
+     asked for, calc(1rem * 1.25) computes to 30px and keeps it. */
+  --ui-scale:1;
+  font-size:calc(1rem * var(--ui-scale));
+
+  --bg:#15171B; --panel:#1E2127; --raise:#282C34; --ink:#EDE7DB; --dim:#868D99; --hair:#333842;
+  --ev:#D9A227; --moz:#C2452D;
+  /* The chrome floats over the map rather than framing it, so its surfaces are
+     translucent: the model stays readable underneath. */
+  --glass:rgba(26,29,35,.74); --edge:rgba(255,255,255,.10); --inset:rgba(255,255,255,.055);
+  /* The room sheet's own ground. --sunk and not --inset, which is what --inset
+     COMES TO once composited over --panel: same colour, no transparency. The
+     sheet covers the plan, and a translucent ground would leave the drawing
+     ghosting through the room's own text.
+
+     Resolved HERE and not inside .roomsheet: that subtree re-points --dim for
+     its text, and a var() read there would pick up the new value. */
+  --roomsurface:var(--sunk);
+  /* --inset is translucent, which is right for a well sunk into a surface and
+     useless to a gradient: a gradient has to name a colour. This is that same
+     well already composited over --panel, worked out rather than guessed —
+     .055 white over #1E2127. Anything that has to FADE INTO the well uses this;
+     anything sitting ON a surface still uses --inset. */
+  --sunk:#2A2D33;
+  /* The lighting model from the worklog project, not glass: a catch-light on
+     the TOP edge, a faint shade on the BOTTOM edge, and a three-layer drop
+     (ambient + key + contact) for honest depth. Our default theme is the dark
+     one, so these are the worklog's dark values; the light block below carries
+     its light ones. --control-shadow is the same model, tighter, for the small
+     floating shells. */
+  --card-highlight:inset 0 1px 0 0 rgba(255,255,255,.08);
+  --card-edge:inset 0 -1px 0 0 rgba(0,0,0,.25);
+  --card-shadow:0 1px 2px -1px rgba(0,0,0,.45),
+                0 5px 14px -4px rgba(0,0,0,.5),
+                0 20px 42px -14px rgba(0,0,0,.6);
+  --control-shadow:0 1px 2px -1px rgba(0,0,0,.5),
+                   0 4px 10px -3px rgba(0,0,0,.55);
+  /* Mozilla's own pair, under the SIL Open Font License. Two faces with two
+     jobs: Headline is drawn for titles at size, Text for everything you read
+     rather than glance at. Both are variable and stop at 700 — there is no 800
+     to ask for. Mono stays IBM Plex: Mozilla publishes none, and the readout
+     and the street labels need a font whose digits line up. */
+  --display:"Mozilla Headline",ui-sans-serif,system-ui,sans-serif;
+  --text:"Mozilla Text",ui-sans-serif,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  /* Type scale. Every size in the interface comes from these six tokens and
+     none is written where it is used, so the whole thing retunes from one
+     place and two sizes that should match cannot drift apart.
+     Each one is fluid: it grows with the window between a 360px phone and a
+     1280px laptop, so the sheet reads tight in a hand and breathes on a desk
+     without a media query per element. The pairs below are the px they reach
+     at each end when the reader's base is the usual 16.
+     THE MIDDLE TERM ALWAYS CARRIES A rem, never pure vw. That is the whole
+     accessibility argument for this scale: a preferred value made only of vw
+     welds the text to the window, so a reader who raises their browser font
+     size gets nothing back — and WCAG 1.4.4 asks for 200%. With a rem in the
+     term, that half keeps moving with them, and the ceiling is in rem too so
+     it moves up out of the way instead of capping them.
+     The vw half is multiplied by --ui-scale by hand. The rem halves ride it
+     already, through the root; without this the vw half stayed put and turning
+     the stepper to 1.3 moved the type only 1.22 — the one control a volunteer
+     reaches for in daylight, quietly under-delivering. */
+  --fs-2xs:clamp(0.7188rem,0.6821rem + 0.163vw * var(--ui-scale),0.8125rem);   /* 11.5→13   · uppercase labels, badges */
+  --fs-xs:clamp(0.7812rem,0.7446rem + 0.163vw * var(--ui-scale),0.875rem);     /* 12.5→14   · field labels, times, captions */
+  --fs-sm:clamp(0.8438rem,0.7948rem + 0.2174vw * var(--ui-scale),0.9688rem);   /* 13.5→15.5 · secondary prose, lists, buttons */
+  --fs-md:clamp(0.9375rem,0.8886rem + 0.2174vw * var(--ui-scale),1.0625rem);   /* 15  →17   · body, search field */
+  --fs-lg:clamp(1.125rem,1.0516rem + 0.3261vw * var(--ui-scale),1.3125rem);    /* 18  →21   · sheet title */
+  --fs-xl:clamp(1.1875rem,1.0897rem + 0.4348vw * var(--ui-scale),1.4375rem);   /* 19  →23   · viewer title */
+  /* Kept apart on purpose: --r-control is anything you press and is a full
+     pill, --r-surface is the floating shells those controls sit on. Only the
+     surface radius scales; a pill is a pill at any size. */
+  /* The one easing in the viewer. It was already the sheet's, written out by
+     hand in three places; naming it is what keeps a fourth thing from moving to
+     a curve of its own. Fast out, settling in, and no control point above 1 —
+     nothing here overshoots where it is going. */
+  --ease:cubic-bezier(.32,.72,0,1);
+  --r-control:999px;
+  --r-surface:.9375rem;
+  /* A row inside a popover is not a control you press so much as a line you
+     read, so it is not a pill (Erick, 2026-09-14). Concentric with the shell
+     it sits in: the surface radius less the popover's own padding. */
+  --r-row:calc(var(--r-surface) - .375rem);
+  /* A sheet is not a floating shell: it is anchored to the bottom edge and much
+     larger, so it carries its own, rounder corner. */
+  --r-sheet:1.375rem;
+  /* The sheet dims what is behind it. Dark on dark is a shade; dark on the
+     light theme is a bruise, so the scrim is themed like everything else. */
+  --scrim:rgba(8,9,12,.46);
+  /* Naming the scheme keeps every user-agent default — CanvasText, scrollbars,
+     form controls — on the same side as the rest of the interface. */
+  color-scheme:dark;
+}
+/* The light theme was born warm —cream, bone, #E4DFD4— to match the site's
+   brick. The site IS STILL that colour: THEME.light in scene.js is the model's
+   palette and is not touched here. But the interface on top is not the
+   building: it is what you read while looking at the building, and in cream
+   one surface was hard to tell from the next.
+   White for what is read, neutral grey for the well the controls sit in, and
+   the chosen control stays dark — the one thing that does not change. */
+[data-theme="light"]{
+  --bg:#F4F4F5;--panel:#FFFFFF;--raise:#FFFFFF;--ink:#17181B;--dim:#656A70;--hair:#E3E3E6;
+  --glass:rgba(255,255,255,.86);--edge:rgba(0,0,0,.10);--inset:rgba(0,0,0,.07);
+  --roomsurface:#FFFFFF;
+  /* The same invariant the dark theme carries: --inset COMPOSITED over
+     --panel has to give exactly --sunk. .tabs is painted with the first and
+     .subtabs with the second, and they are two rows of the same control one
+     over the other: a couple of points of difference between them reads as a
+     bug. .07 black over white is 237,237,237 — hence the value, not by eye. */
+  --sunk:#EDEDED;
+  --card-highlight:inset 0 1px 0 0 rgba(255,255,255,.85);
+  --card-edge:inset 0 -1px 0 0 rgba(20,20,24,.05);
+  --card-shadow:0 1px 2px -1px rgba(20,20,24,.1),
+                0 4px 10px -3px rgba(20,20,24,.1),
+                0 16px 32px -12px rgba(20,20,24,.14);
+  --control-shadow:0 1px 2px -1px rgba(20,20,24,.12),
+                   0 3px 8px -3px rgba(20,20,24,.16);
+  --scrim:rgba(18,18,22,.32);
+  color-scheme:light;
+}
+/* Trimming the half-leading off every text box means a gap in the layout is the
+   gap you actually see, and not that gap plus whatever slack the font happened
+   to bring. Applied to everything rather than element by element, so the whole
+   interface can be spaced on one footing. Browsers without text-box keep the
+   slack and nothing breaks. */
+*{box-sizing:border-box;text-box:trim-both cap alphabetic}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--text);font-size:var(--fs-md);overflow:hidden}
+canvas{display:block;touch-action:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important}
+  /* scroll-behavior is not a transition and survives the rule above. */
+  .subtabs{scroll-behavior:auto}
+}
+
+/* ---------- identity ----------
+   The logo is a solid tile with the mark cut out of it, so it is the one heavy
+   element on screen. Everything else stays quiet to let it carry the weight. */
+/* The mark and the theme switch share one row rather than living as two
+   independently fixed boxes, so the width across the top is something they
+   divide between them instead of something they collide over. */
+.topbar{position:fixed;top:.875rem;left:.9375rem;right:.9375rem;z-index:12;display:flex;
+  align-items:center;justify-content:space-between;gap:.75rem;pointer-events:none}
+.topbar > *{pointer-events:auto}
+.brand{display:flex;gap:.6875rem;align-items:center;min-width:0;pointer-events:none}
+.brand svg{width:2.5rem;height:2.5rem;flex:none;display:block;color:var(--ink);border-radius:3rem}
+.brand .text{display:grid;gap:0.375rem;min-width:0}
+.brand h1{margin:0;font-family:var(--display);font-size:var(--fs-xl);font-weight:700;
+  letter-spacing:-.025em;line-height:1.06}
+/* At the largest text size on a narrow phone something has to give. The title
+   wraps, because "MozFest 20…" would be worse than two lines; the subtitle
+   elides, because it is the line you can afford to lose the tail of. */
+.brand p{margin:0;font-size:var(--fs-xs);font-weight:500;color:var(--dim);line-height:1.25;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ---------- one control surface, reused ----------
+   Theme switch, view switch and dock are the same component: a translucent
+   shell holding flat controls with the chosen one filled solid. */
+/* No border: the rim highlight and the bottom shade draw the edge, the way a
+   lit object has one, and a drawn line on top of that only muddies it. */
+.shell{background:var(--glass);border-radius:var(--r-surface);
+  box-shadow:var(--card-highlight),var(--card-edge),var(--control-shadow);
+  backdrop-filter:blur(16px) saturate(1.35);
+  -webkit-backdrop-filter:blur(16px) saturate(1.35)}
+.seg{display:inline-flex;gap:.125rem;padding:.1875rem;background:var(--inset);
+  border-radius:var(--r-control)}
+.seg button{height:2.375rem;min-width:2.875rem;padding:0 1.5rem;border-radius:var(--r-control);
+  color:var(--dim);font-size:var(--fs-sm);font-weight:600;display:inline-flex;
+  align-items:center;justify-content:center;transition:background .15s,color .15s}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"],
+.seg button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.seg svg{width:1.0625rem;height:1.0625rem}
+/* The two bars you reach for are pills like the controls inside them; the
+   panels that hold content keep a real radius. */
+/* A flex container, not a block: with the global text-box trim, a block that
+   holds an inline-level child has that child's line box trimmed away with it,
+   and the shell collapses to a sliver while the button spills out of it. Every
+   other shell here is already flex, which is why only this one showed it. */
+.topnav{flex:none;display:flex;gap:.125rem;padding:.25rem;border-radius:var(--r-control)}
+
+/* ---------- dock ---------- */
+/* The sheet's tabs are the spine of a card and wear the wide padding; the dock
+   is a small instrument floating over the map and wants none of it. Same
+   component, two jobs. */
+.dock .seg button{padding:0 .5rem}
+/* Only the map controls are left down here, so the dock no longer spans the
+   width: it is as wide as what it holds, centred, on every size. */
+.dock{position:fixed;z-index:12;bottom:1.125rem;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:.4375rem;padding:.3125rem;
+  border-radius:var(--r-control)}
+/* padding:0 because an .ico is sized by width and height and centres its glyph
+   with flex — the user agent's own button padding does nothing here except stop
+   the reset button from collapsing to zero, which is exactly what it did. */
+.ico{width:2.75rem;height:2.75rem;padding:0;border-radius:var(--r-control);color:var(--dim);flex:none;
+  display:inline-flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.ico:hover{color:var(--ink);background:var(--inset)}
+/* Nothing to reset while the view is already home, so the button collapses
+   rather than vanishing: the dock is centred on itself, and a button that
+   disappeared outright would make the whole bar jump sideways. The negative
+   margin swallows the dock's gap along with the width. */
+#resetBtn{overflow:hidden;
+  transition:width .3s var(--ease),
+             opacity .2s ease,
+             margin-inline-start .3s var(--ease)}
+#resetBtn:disabled{width:0;opacity:0;margin-inline-start:-.4375rem;
+  pointer-events:none;cursor:default}
+.ico[aria-expanded="true"]{background:var(--ink);color:var(--bg)}
+.ico svg{width:1.1875rem;height:1.1875rem}
+@media (max-width:720px){
+  .dock{bottom:calc(.75rem + env(safe-area-inset-bottom))}
+}
+
+/* ---------- the route card ----------
+   Sits on the dock like a small sheet. The orange is the festival's, the same
+   as the line drawn on the ground, so the card and the map read as one thing. */
+/* --route draws; --route-text is text in that orange. On the dark card the line's
+   own orange already reads (4.8:1), so it is the same; on the light card it
+   reads 2.6:1 and is darkened until it reaches 4.5:1. */
+:root{--route:#EF6C1F;--route-text:var(--route)}
+[data-theme="light"]{--route-text:#B4470F}
+.route{position:fixed;z-index:12;left:50%;transform:translateX(-50%);
+  bottom:calc(1.125rem + 3.375rem + .625rem);width:min(26rem, calc(100% - 1.875rem));
+  padding:.625rem .75rem .875rem .875rem;display:grid;gap:.5rem}
+.route[hidden]{display:none}
+@media (max-width:720px){
+  .route{bottom:calc(.75rem + env(safe-area-inset-bottom) + 3.375rem + .5rem)}
+}
+.route-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;min-width:0}
+.route-a{margin:0;font-size:var(--fs-md);font-weight:600;min-width:0;overflow-wrap:anywhere}
+.route .ico{width:2.25rem;height:2.25rem}
+/* From and To: the same row twice, whichever way the card was opened. */
+.route-from,.route-to{display:flex;align-items:baseline;gap:.5rem;width:100%;text-align:left;
+  padding:.75rem;border-radius:var(--r-row);background:var(--inset);
+  color:var(--ink);font-size:var(--fs-sm);min-width:0}
+.route-from .k,.route-to .k{color:var(--dim);font-size:var(--fs-2xs);text-transform:uppercase;letter-spacing:.06em;
+  min-width:2.25rem}
+.route-from .name,.route-to .name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.route-from .change,.route-to .change{margin-left:auto;color:var(--route-text);font-weight:600;flex:none}
+/* Opened from the menu, To waits for a choice: it says so, and has nothing to change yet. */
+.route-to[data-empty] .name{color:var(--dim)}
+.route-to[data-empty] .change{display:none}
+.route-steps:empty{display:none}
+.route-steps{margin:1rem 0 .45rem;padding-left:1.25rem;display:grid;gap:.3125rem;font-size:var(--fs-sm)}
+.route-steps li::marker{color:var(--route);font-weight:600}
+/* Each step stands apart from the one before; the metres stay with the last. */
+.route-steps li + li:not(.dist){margin-top:.85rem}
+.route-steps li.dist{list-style:none;margin-top:.25rem;color:var(--dim);
+  font-size:var(--fs-xs);font-variant-numeric:tabular-nums}
+.route-steps .error{list-style:none;margin-left:-1.25rem;color:var(--dim)}
+/* A card's head: its names on the left and the way there beside them, centred
+   on the two lines. The close cross sits over the top right corner, so the head
+   keeps clear of it; a long name wraps rather than squeeze the button. */
+.card-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:.75rem;
+  padding-right:2.125rem}
+.card-title{min-width:0}
+.route-btn{display:inline-flex;align-items:center;gap:.375rem;padding:.4375rem .875rem .4375rem .6875rem;
+  border:1.5px solid var(--route-text);border-radius:var(--r-control);background:transparent;
+  color:var(--route-text);font-size:var(--fs-sm);font-weight:600;white-space:nowrap}
+.route-btn svg{width:1.125rem;height:1.125rem;flex:none}
+.route-btn:hover{background:color-mix(in srgb,var(--route) 12%,transparent)}
+
+/* ---------- popovers ---------- */
+/* Both popovers hang from the top bar now, because that is where the buttons
+   that open them went. */
+.pop{position:fixed;z-index:13;padding:.375rem;display:none}
+.pop[data-open="true"]{display:block}
+#menu{top:4.25rem;right:.9375rem;width:15.5rem}
+.pop-head{margin:.5rem .6875rem .25rem;font-size:var(--fs-2xs);font-weight:600;
+  color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+/* Search opens where the eye already is, not down by a dock it no longer
+   belongs to. The box sits high in the view and the results fall from it,
+   stopping short of the bottom edge — so a long list runs the whole height
+   instead of being trapped in whatever was left under the box. */
+#search{top:38dvh;left:50%;transform:translateX(-50%);
+  width:min(26.875rem,calc(100vw - 1.625rem));
+  max-height:calc(62dvh - 1.5rem);flex-direction:column}
+#search[data-open="true"]{display:flex}
+/* And it falls into place (Erick, 2026-09-14): fades in while dropping the
+   last 30px onto its spot. `translate` and not `transform`, because the box
+   already carries a transform that differs by screen width — the centring
+   translateX above, none on a phone — and the two properties compose. From
+   display:none there is nothing to transition FROM, so @starting-style says
+   where it starts; a browser without it shows the box the way it always did.
+   The reduced-motion rule at the top cancels the transition, and then the
+   starting values are simply never seen. */
+#search{transition:opacity .28s ease,translate .28s var(--ease)}
+#search[data-open="true"]{opacity:1;translate:0 0}
+@starting-style{
+  #search[data-open="true"]{opacity:0;translate:0 -30px}
+}
+.pop .row{display:flex;width:100%;align-items:center;justify-content:space-between;gap:.625rem;
+  padding:.625rem .6875rem;border-radius:var(--r-row);font-size:var(--fs-sm);font-weight:500;
+  color:var(--ink);text-align:left}
+.pop button.row:hover{background:var(--inset)}
+/* One rule, above Full screen: it separates the rows a rung adds — zones,
+   the readout, placing — from the ones everybody gets. Those rows are removed
+   by three different places, so the rule decides for itself: left first in
+   the menu, it has nothing to separate and hides (Erick, 2026-09-14). */
+.pop .rule{height:1px;background:var(--edge);margin:.25rem .5rem}
+.pop .rule:first-child{display:none}
+.tick{width:1rem;height:1rem;border-radius:.3125rem;border:1.5px solid var(--dim);flex:none;
+  display:inline-flex;align-items:center;justify-content:center}
+.tick svg{width:.6875rem;height:.6875rem;color:var(--bg);opacity:0}
+.row[aria-pressed="true"] .tick{background:var(--ink);border-color:var(--ink)}
+.row[aria-pressed="true"] .tick svg{opacity:1}
+/* The theme row is a switch, not a box to tick: a track and a knob that slides
+   to the right when the light theme is on. Drawn in CSS from aria-checked, so
+   the state has one source. */
+.switch{width:2.125rem;height:1.25rem;flex:none;position:relative;border-radius:var(--r-control);
+  background:var(--raise);box-shadow:inset 0 0 0 1.5px var(--dim);transition:background .2s,box-shadow .2s}
+.switch::after{content:"";position:absolute;top:.1875rem;left:.1875rem;width:.875rem;height:.875rem;
+  border-radius:50%;background:var(--dim);transition:translate .2s var(--ease),background .2s}
+.row[aria-checked="true"] .switch{background:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.row[aria-checked="true"] .switch::after{translate:.875rem 0;background:var(--bg)}
+/* Full screen is an action, not a setting: an icon where the box was, and the
+   label says what the press will do. Two glyphs, one shown per state. */
+.glyph{width:1.125rem;height:1.125rem;flex:none;color:var(--dim);display:inline-flex}
+.glyph svg{width:100%;height:100%}
+.row[aria-pressed="false"] .glyph .exit,.row[aria-pressed="true"] .glyph .enter{display:none}
+/* Steppers, not a slider: a volunteer squinting at this in daylight wants two
+   big targets and a number, not a thumb to drag. */
+.steps{display:inline-flex;align-items:center;gap:.125rem;padding:.1875rem;
+  background:var(--inset);border-radius:var(--r-control)}
+.steps button{width:1.75rem;height:1.75rem;border-radius:var(--r-control);color:var(--ink);
+  font-size:var(--fs-md);font-weight:600;line-height:1;display:inline-flex;
+  align-items:center;justify-content:center;transition:background .15s,opacity .15s}
+.steps button:hover:not(:disabled){background:var(--glass)}
+.steps button:disabled{opacity:.35;cursor:default}
+#uiVal{min-width:2.7rem;text-align:center;font-size:var(--fs-xs);font-weight:600;color:var(--dim);
+  font-variant-numeric:tabular-nums}
+/* Not a pill. The field is the top edge of a stack that continues into the
+   results, so its corners run parallel to the shell around it: the panel's own
+   radius less the padding between them, which is what makes two rounded boxes
+   look concentric rather than merely both round. */
+/* min-height and not height: the field is a flex item, and a full list of
+   results shrank it from underneath. */
+#q{width:100%;min-height:2.5rem;padding:0 .875rem;
+  border-radius:calc(var(--r-surface) - .375rem);
+  border:1px solid var(--edge);background:var(--inset);color:var(--ink);font:inherit;font-size:var(--fs-md)}
+#q::placeholder{color:var(--dim)}
+/* min-height:0 is what lets a flex child scroll rather than push its parent
+   past the cap above. */
+#results{flex:1 1 auto;min-height:0;overflow:auto;margin-top:.625rem}
+/* The same radius as the field above, by the same subtraction: a row and the
+   input read as one family rather than as a pill sitting in a box. */
+/* A row is a two-by-two grid: the name top left, the badge —when there is
+   one— top right, and the line underneath across both columns. The badge used
+   to ride inline after the name and land wherever the name ended; now it
+   keeps to the corner however long the name is, and a name that wraps flows
+   under the badge instead of around it. Rows without a badge get the same
+   grid, so the name-to-line rhythm is one and the same down the list. (Erick,
+   2026-09-21, measured in DevTools.) */
+#results button{display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;
+  row-gap:.25rem;column-gap:.375rem;align-items:baseline;width:100%;text-align:left;padding:.725rem .6875rem;
+  border-radius:calc(var(--r-surface) - .375rem);font-size:var(--fs-sm);font-weight:500}
+/* Only BETWEEN rows: a margin on every row would push the first one off the
+   gap the list already has above it. */
+#results button + button{margin-top:.325rem}
+#results button:hover{background:var(--inset)}
+#results .k{grid-column:1 / 3;font-size:var(--fs-2xs);color:var(--dim);font-weight:400;margin-top:.625rem}
+/* What a row IS, when its name alone does not say. Only sessions and the
+   festival's kit carry one: a building and a room announce themselves in the
+   line underneath.
+   The pill takes no part in the height of its row. With the global trim a
+   name is its cap height, 9 px, and a pill is 18: left to size the row it
+   pushed the line underneath 9 px lower than in a row without one, and the
+   list lost its rhythm (Erick, 2026-09-21). So its padding and border are
+   pulled back with margins of the same size —what the grid measures is its
+   text alone— and that text sits on the name's baseline, the way a badge
+   beside a title does. The pill then overhangs 4 px into the button's padding
+   above and 5 px into the gap below, 9 px clear of the line underneath. The
+   baseline is asked for on the row, not on the pill: a lone item aligns its
+   baseline with nobody's and falls back to the top. */
+#results .tag{--pill-y:.25rem;justify-self:end;
+  margin:calc(-1 * var(--pill-y) - 1px) 0 calc(-1 * var(--pill-y) - 1px) .4375rem;
+  padding:var(--pill-y) .375rem;
+  border-radius:1rem;background:var(--inset);border:1px solid var(--edge);
+  font-size:var(--fs-2xs);font-weight:600;color:var(--dim)}
+#results p{margin:0;padding:.6875rem;color:var(--dim);font-size:var(--fs-sm);line-height:1.5}
+@media (max-width:720px){
+  #menu{top:calc(4.25rem + env(safe-area-inset-top));right:.75rem;width:15.75rem}
+  /* On a phone the keyboard takes the bottom half as soon as the field has
+     focus, so the field goes to the top and the results get everything under
+     it. Centred, it would be typing into the middle of a shrinking gap. */
+  #search{top:calc(4.25rem + env(safe-area-inset-top));left:.75rem;right:.75rem;
+    width:auto;transform:none;
+    max-height:calc(100dvh - 5.75rem - env(safe-area-inset-top) - env(safe-area-inset-bottom))}
+}
+
+/* ---------- selection panel ---------- */
+/* ---------- detail sheet ----------
+   Two findings carried over from the worklog project, worth not paying for a
+   second time:
+
+   · The dialog opens with show(), never showModal(). A top-layer dialog paints
+     no resting transform on its first open, so the medium detent would snap to
+     full the first time and only behave afterwards. Scrim, Escape and stacking
+     are therefore all reproduced by hand here.
+   · display is scoped to [open]. Left unscoped it beats the user-agent rule by
+     origin, and the closed, invisible dialog covers the map and swallows every
+     click on it. */
+.sheet{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;
+  /* A dialog's user-agent rule sets color:CanvasText, which cuts inheritance
+     from body: everything inside that does not name its own colour goes black,
+     and on the dark theme that is a heading you cannot read. */
+  margin:0;padding:0;border:0;color:var(--ink);z-index:20;background:rgba(8,9,12,0);
+  -webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);
+  transition:background-color .42s ease,backdrop-filter .42s ease,-webkit-backdrop-filter .42s ease}
+.sheet[open]{display:flex;align-items:flex-end;justify-content:center}
+.sheet.is-open{background:var(--scrim);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+
+/* The panel is taller than any detent shows: the detents slide it, so growing
+   the sheet never reflows the content inside it. Closed sits past the bottom
+   edge so a close always travels fully off whichever detent it started from. */
+/* Opaque, not glass. Text on a sheet is read, not glanced at, and translucency
+   costs contrast that the map behind is free to take away at any angle. */
+.sheet-panel{position:relative;width:min(45rem,100%);height:92dvh;
+  display:flex;flex-direction:column;
+  background:var(--panel);
+  border-radius:var(--r-sheet) var(--r-sheet) 0 0;
+  box-shadow:var(--card-highlight),var(--card-edge),var(--card-shadow);
+  transform:translateY(110%);opacity:0;
+  transition:transform .48s var(--ease),opacity .42s ease}
+.sheet.is-open .sheet-panel{opacity:1}
+.sheet.is-open .sheet-panel[data-detent="medium"]{transform:translateY(56dvh)}
+.sheet.is-open .sheet-panel[data-detent="large"]{transform:translateY(0)}
+
+.sheet-handle{flex:0 0 auto;display:flex;justify-content:center;padding:1rem 0 .625rem}
+/* Five pixels high is what you see, and it would be what you can press.
+   Scrolling does the same with less, but the control is there and whoever
+   tries it has to hit it: it gets an invisible touch area more generous than
+   the stroke, a little more below than above because the finger arrives from
+   the content. The bar still measures what it measures. */
+.sheet-grabber{position:relative;
+  width:2.5rem;height:.3125rem;padding:0;border:0;border-radius:var(--r-control);
+  background:var(--dim);opacity:.5;cursor:pointer;transition:opacity .15s ease}
+button.sheet-grabber::before{
+  content:"";
+  display:block;
+  position:absolute;
+  z-index:10;
+  inset-inline:-10px;
+  inset-block:-5px -8px;
+}
+.sheet-grabber:hover,.sheet-grabber:focus-visible{opacity:1;outline:none}
+.sheet-close{position:absolute;top:.5rem;right:.625rem;z-index:2;width:2.25rem;height:2.25rem}
+
+/* Only the body scrolls. min-height:0 is what lets a flex child shrink below
+   its content and actually scroll instead of pushing the panel taller. */
+.sheet-body{flex:1 1 auto;min-height:0;overflow-y:auto;
+  /* This list's bounce stays in this list and does not chain to the page
+     behind, which on iOS is what moves the browser bar mid-read. */
+  overscroll-behavior-y:contain;
+  padding:.25rem 1.1875rem calc(1.5rem + env(safe-area-inset-bottom));
+  scrollbar-width:thin;scrollbar-color:var(--edge) transparent}
+.sheet-body::-webkit-scrollbar,.roomsheet-body::-webkit-scrollbar{width:.375rem}
+.sheet-body::-webkit-scrollbar-track,.roomsheet-body::-webkit-scrollbar-track{background:transparent}
+.sheet-body::-webkit-scrollbar-thumb,.roomsheet-body::-webkit-scrollbar-thumb{
+  background:var(--edge);border-radius:var(--r-control)}
+.sheet-body h2{margin:0 0 .125rem;font-family:var(--display);font-size:var(--fs-lg);font-weight:700;
+  letter-spacing:-.022em;line-height:1.2}
+/* The margin is not decoration. With the global text-box trim the box stops at
+   the baseline, so two trimmed lines stacked flush overlap: the kind was
+   printing through the room's name. */
+.meta{margin-top:.75rem;margin-bottom:.375rem;font-size:var(--fs-xs);color:var(--dim);font-weight:500}
+/* The MozFest name sits under the venue name as a labelled fact, not as a
+   subtitle: they are two different names for one building, and which is which
+   matters when someone says one of them over a radio. */
+.key{display:flex;align-items:baseline;gap:.5rem;margin-top:.375rem;
+  font-size:var(--fs-md);font-weight:600;color:var(--ink)}
+.key span{font-size:var(--fs-2xs);font-weight:500;color:var(--dim);
+  text-transform:uppercase;letter-spacing:.06em}
+dl{margin:.75rem 0 0;display:grid;grid-template-columns:5.125rem 1fr;gap:.4375rem .75rem;font-size:var(--fs-sm)}
+dt{font-size:var(--fs-xs);color:var(--dim);font-weight:500;padding-top:.0625rem}
+dd{margin:0}
+.est{display:inline-block;font-size:var(--fs-2xs);font-weight:600;color:var(--moz);
+  border:1px solid var(--moz);border-radius:var(--r-control);padding:.0625rem .4375rem;margin-left:.375rem}
+/* One session per line: title on top, when underneath. Read down the titles to
+   find the one you want, and only then look at the time. */
+/* Spaced for the global text-box trim, which took away the half-leading these
+   gaps used to borrow without asking. At .125rem the title's descenders sat on
+   the digits of its own time. Both lines name their line-height rather than
+   inheriting one, so a title that wraps opens up by the same amount. */
+.ses{margin-top:2.25rem;display:flex;flex-direction:column;gap:1.875rem}
+.ses div{display:flex;flex-direction:column;gap:.5rem}
+.ses strong{font-size:var(--fs-sm);font-weight:600;color:var(--ink);line-height:1.3}
+.ses span{font-size:var(--fs-xs);color:var(--dim);line-height:1.3;
+  font-variant-numeric:tabular-nums}
+/* Inside a room the sessions group by space rather than by rule: with the room
+   already named above them, a drawn line adds a boundary the reader does not
+   need. The gap between sessions against the gap inside one is what makes them
+   read as blocks. */
+/* ---------- the sheet's tabs ----------
+   Two levels. The first wears the shell of the 2D/3D switch because it is the
+   same gesture, and stretches to the full width because it is the spine of the
+   card rather than a control tucked in a corner. The second is a row of pills
+   that WRAPS rather than scrolls: a tab you cannot see is a tab nobody presses,
+   and Salvia has five floors with long names. */
+/* Sized to match the row of sub-tabs below it, button and shell alike: they are
+   two controls of the same kind stacked one over the other, and a couple of
+   pixels of difference between them reads as a mistake rather than as a
+   hierarchy. The dock keeps the tighter .seg default — it is the same component
+   doing a different job. */
+.tabs{position:relative;display:flex;width:100%;margin-top:1.875rem;padding:.25rem}
+.tabs button{flex:1;min-width:0;height:2.75rem}
+
+/* ---------- the travelling pill ----------
+   The rule above already fills the chosen tab, and that is the whole design
+   where anchor positioning is not available yet — the tab reads as chosen, it
+   simply does not slide. Everything below is the enhancement.
+
+   One pill lives behind the row and is anchored to whichever tab is selected,
+   so changing tab is one object travelling rather than two backgrounds blinking
+   in turn. No JavaScript measures anything: the anchor IS the button, so the
+   pill is correct at any text size and through any reflow.
+
+   Measured in Chrome 152 before writing it, because anchor() resolves at layout
+   time and had every reason not to animate: it does — the pill walked 8 → 54.6
+   → 95.5 → 136.3 → 177.1 → 218 px across a 600ms linear transition. */
+.tab-pill{display:none}
+@supports (anchor-name:--x){
+  .tabs button[aria-selected="true"]{background:none}
+  .tabs [data-tab="sessions"]{anchor-name:--tab-sessions}
+  .tabs [data-tab="floors"]{anchor-name:--tab-floors}
+  /* Above the pill, or the fill would paint over the label. */
+  .tabs button{position:relative;z-index:1}
+  .tab-pill{display:block;position:absolute;z-index:0;
+    background:var(--ink);border-radius:var(--r-control);
+    top:anchor(top);bottom:anchor(bottom);left:anchor(left);right:anchor(right);
+    /* One curve, one duration, all four edges. No control point above 1, so the
+       pill never travels past the tab it is going to; and equal durations on the
+       two horizontal edges keep its width constant on the way, so it slides
+       rather than stretching. It is the curve the sheet's own detents already
+       use — the viewer moves things one way, not two. */
+    transition:top .3s var(--ease),bottom .3s var(--ease),
+               left .3s var(--ease),right .3s var(--ease)}
+  .tabs:has([data-tab="sessions"][aria-selected="true"]) .tab-pill{position-anchor:--tab-sessions}
+  .tabs:has([data-tab="floors"][aria-selected="true"])   .tab-pill{position-anchor:--tab-floors}
+}
+/* The sub-tabs sit in a shell of their own, the way every other switch here
+   does, and the shell is centred over the plan rather than pinned to its left
+   edge. Loose pills on a line read as a list of links; enclosed, they read as
+   one control with a chosen setting.
+   2.75rem is the touch target, matching the dock's round buttons — this gets
+   used one-handed, walking, by someone being asked where a room is. */
+.subrow{display:flex;justify-content:center;align-items:center;gap:.25rem;margin-top:1.75rem}
+/* The row scrolls rather than wraps. Salvia has five floors and a phone has no
+   width for them; wrapped, they pushed the plan a third of the way down the
+   card before you could see any of it. */
+.subtabs{display:inline-flex;flex-wrap:nowrap;gap:.25rem;min-width:0;
+  /* Fully round, like the pills it holds: a squarer well around round buttons
+     reads as two different shapes arguing. */
+  padding:.25rem;background:var(--sunk);border-radius:var(--r-control);
+  overflow-x:auto;overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:thin;
+  anchor-name:--tabsScrolling}
+.subtabs button{scroll-snap-align:center}
+.subtabs button{min-height:2.75rem;padding:0 1rem;border-radius:var(--r-control);
+  font-size:var(--fs-sm);font-weight:600;color:var(--dim);
+  /* flex:none, or the pills shrink to share the row instead of the row
+     scrolling — five floors squeezed into 52px each and every one of them
+     elided to "Ba…". The row is the thing that gives way here, not the names. */
+  flex:none;
+  /* A floor name is whatever Figma was given, and one long one would push the
+     row into another line — or off the edge on a phone. Capped and elided, a
+     long name costs its own tail instead of the plan's space. The names in the
+     trace today are all short enough that nothing is cut; this is here so the
+     next retrace cannot break the row. The whole name stays in aria-label. */
+  min-width:0;max-width:9.5rem;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subtabs button:hover{color:var(--ink)}
+.subtabs button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+/* ---------- the row's own scroll buttons ----------
+   ::scroll-button() is browser-generated: no markup, no listeners, and the
+   enabled/disabled state is computed from the scroll position rather than
+   maintained by hand. Two things about it are worth writing down, because both
+   were measured rather than assumed and neither is what the documentation led
+   me to expect:
+
+   · The buttons are laid out as SIBLINGS OF THE SCROLL CONTAINER, in the
+     parent's flow — not inside it. So they are flex items of .subrow, they are
+     ordered with `order`, and position:absolute against the container does not
+     work at all: the container is not their ancestor, so such a button resolves
+     against the viewport and stretches the height of the screen.
+   · Disabled at zero opacity but still in flow is deliberate. The space stays
+     reserved, so scrolling to an end does not shift the row sideways, and a row
+     with nothing to scroll shows two invisible gaps either side — which stays
+     symmetrical and therefore still centred.
+
+   Without the feature the row is still a scroller, so it can still be swiped
+   or dragged; the scrollbar is only hidden where the buttons exist to replace
+   it. */
+@supports selector(::scroll-button(inline-end)){
+  .subtabs{scrollbar-width:none}
+  .subtabs::-webkit-scrollbar{display:none}
+  /* Anchored rather than laid out. As flex items they took a slot each and
+     pushed the pills inward; anchored, they sit ON the ends of the well and the
+     pills scroll under a fade. position-anchor is what makes this possible at
+     all — these boxes are not descendants of the scroll container, so an
+     ordinary absolute position resolves against the viewport. */
+  /* The inline inset goes through anchor() too. anchor() only affects the
+     property it is written in, so a bare `inset-inline-start:-1px` next to an
+     anchored `top` resolves against the CONTAINING BLOCK — and for these boxes
+     that is the viewport. Measured: the arrow flew to the right edge of the
+     screen, a whole sheet away from the row it belongs to, with its fade
+     painted over the panel. The -1px survives as the nudge it was meant to be,
+     now applied to the anchor's own edge. */
+  /* Only the OUTER corners are rounded, to the same radius as the well's own
+     cap. Square, the fade painted a rectangle over a round end and the whole
+     thing read as a box sitting on a pill. */
+  .subtabs::scroll-button(inline-start){content:"\2039";
+    inset-inline-start:calc(anchor(start) - 1px);text-align:start;
+    border-start-start-radius:var(--r-control);border-end-start-radius:var(--r-control);
+    background:linear-gradient(90deg,var(--sunk),transparent)}
+  .subtabs::scroll-button(inline-end){content:"\203A";
+    inset-inline-end:calc(anchor(end) - 1px);text-align:end;
+    border-start-end-radius:var(--r-control);border-end-end-radius:var(--r-control);
+    background:linear-gradient(90deg,transparent,var(--sunk))}
+  /* border:0 explicitly: the reset at the top of this stylesheet targets the
+     button ELEMENT, and a generated scroll button is not one, so it keeps the
+     user agent's own border unless told otherwise. */
+  .subtabs::scroll-button(*){position:absolute;position-anchor:--tabsScrolling;
+    top:calc(anchor(top) + 0px);bottom:anchor(bottom);
+    width:2.5rem;border:0;padding:0 .4375rem;color:var(--ink);
+    /* The chevrons are a single thin glyph each, so they need a size above the
+       one the pills are set in to carry the same weight on screen. Taken from
+       the scale rather than fixed, so they grow with the text-size stepper like
+       everything else. */
+    font-size:var(--fs-xl);font-weight:600;line-height:1;
+    cursor:pointer;transition:opacity .15s}
+  .subtabs::scroll-button(*):disabled{opacity:0;pointer-events:none}
+}
+
+/* The same travelling bubble as the tab row above, on a row whose buttons are
+   not known until the trace is read — so each button names its own anchor from
+   an inline style and aimSubPill points at the chosen one. Without anchor
+   positioning the filled pill above is the whole design, as it is up there. */
+.sub-pill{display:none}
+@supports (anchor-name:--x){
+  .subtabs{position:relative}
+  .subtabs button[aria-selected="true"]{background:none}
+  .subtabs button{position:relative;z-index:1}
+  .sub-pill{display:block;position:absolute;z-index:0;
+    background:var(--ink);border-radius:var(--r-control);
+    top:anchor(top);bottom:anchor(bottom);left:anchor(left);right:anchor(right);
+    transition:top .3s var(--ease),bottom .3s var(--ease),
+               left .3s var(--ease),right .3s var(--ease)}
+}
+
+/* One floor is not a choice, so it is not offered as one: it says which floor
+   this is and gets out of the way. */
+.planhead{margin:2.75rem 0 0;text-align:center;font-size:var(--fs-sm);
+  font-weight:600;color:var(--dim)}
+/* The room sheet takes its ceiling from here, so this is an anchor as well as
+   a panel. */
+.tabpanel{margin-top:1.75rem;anchor-name:--tabpanel}
+
+/* ---------- the floor plan ----------
+   Capped at 40dvh so it still fits with the sheet at its middle detent, which is
+   where picking a floor leaves it. When the cap bites, the drawing letterboxes
+   inside its box — preserveAspectRatio's default — and planAt() knows it.
+   Strokes are non-scaling: a plan of a 60 m nave and one of a 12 m room then
+   carry the same line weight on screen, which is the only weight anyone sees. */
+/* position:relative so the bubble's anchor can be laid over a room in the
+   plan's own coordinates. */
+.plan{position:relative;width:100%;max-height:40dvh;margin:0 auto}
+.plan svg{display:block;width:100%;height:100%;max-height:40dvh}
+.plan-slab{fill:var(--inset);stroke:var(--dim);stroke-width:1.5;
+  vector-effect:non-scaling-stroke;stroke-linejoin:round}
+/* No tap highlight and no focus ring drawn by the browser. On an svg child an
+   outline is drawn round the element's BOX, and on a site traced twelve degrees
+   off square that box is a good deal bigger than the room — a big rectangle
+   flashing over the neighbours. Keyboard focus is shown by thickening the
+   room's own edge instead, which follows the actual shape. */
+.plan-room{fill-opacity:.62;stroke:var(--panel);stroke-width:1;
+  vector-effect:non-scaling-stroke;cursor:pointer;transition:fill-opacity .12s;
+  -webkit-tap-highlight-color:transparent}
+.plan-room:focus{outline:none}
+.plan-room:hover{fill-opacity:.85}
+.plan-room.is-on{fill-opacity:1;stroke:var(--ink);stroke-width:2.5}
+.plan-room:focus-visible{outline:none;stroke:var(--ink);stroke-width:3}
+/* Sized in user units by plan2d, against the viewBox, so it lands at one size
+   on screen whatever the building measures. */
+/* A ring rather than a filled dot: it sits on top of a room that already
+   carries a colour, and a solid mark would read as a hole in it. */
+.plan-kit{stroke:var(--panel);stroke-width:2;vector-effect:non-scaling-stroke;
+  fill-opacity:.9;pointer-events:none}
+/* The volunteer station, in the festival's colour with a ring in the panel's
+   colour: it has to read on top of any room, and the rooms already use the
+   legend's nine colours. The ring is what sets it apart from whatever lies
+   beneath, without inventing a tenth colour. */
+.plan-crew circle{fill:var(--moz);stroke:var(--panel);stroke-width:2.5;
+  vector-effect:non-scaling-stroke}
+/* And the green ring of the figure on the site, so it is the same station. */
+.plan-crew .plan-crew-ring{fill:none;stroke:#2BE36A;stroke-width:2.5}
+/* In the colour of its priority in the Book, like the ring on the site. */
+.plan-crew.prio-medium .plan-crew-ring{stroke:#F2B705}
+.plan-crew.prio-low .plan-crew-ring{stroke:#2F9BEF}
+/* The VCs, in the festival's orange, like their figure on the site. */
+.plan-crew.vc .plan-crew-ring{stroke:#EF6C1F}
+/* While placing, a station on the plan is dragged: the finger must not scroll. */
+body[data-placing="true"] .plan-crew{cursor:grab;touch-action:none}
+body[data-placing="true"] .plan-crew.dragging{pointer-events:none;opacity:.7}
+
+/* The placing panel. It lives in the same shell as the menu and the search. */
+#crew{width:min(22rem,calc(100vw - 1.5rem));max-height:70dvh;overflow-y:auto;padding:.75rem}
+/* Air between the title, the help and the list: Erick's measurements, here
+   only, because .pop-head is shared with the menu. */
+#crew .pop-head{margin:.5rem 0 1rem}
+.crew-hint{margin:.25rem 0 .75rem;font-size:var(--fs-2xs);color:var(--dim);line-height:1.45}
+#crew > .crew-hint{margin:.25rem 0 2rem}      /* the help at the top; not the draft notice at the foot */
+.crew-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.375rem}
+.crew-row .vc{color:#EF6C1F;font-size:var(--fs-2xs);font-weight:600;letter-spacing:.04em}
+/* The count of those sharing a space: "3 of 6", quietly beside the code. */
+.crew-row .count{margin-left:.375rem;color:var(--dim);font-size:var(--fs-2xs);font-weight:500}
+/* A station has no name: it has a code and a place, and the place is worked
+   out from where it is. What cannot be recovered from memory is the point. */
+.crew-row .code{flex:0 0 auto;min-width:2.5rem;white-space:nowrap;font-family:var(--mono);font-size:var(--fs-xs);font-weight:700}
+.crew-row .code.nozone{color:var(--moz)}
+.crew-row .where{flex:1 1 auto;min-width:0;font-size:var(--fs-2xs);
+  color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crew-row button{flex:0 0 auto;width:1.875rem;height:1.875rem;border:0;
+  border-radius:var(--r-control);background:var(--inset);color:var(--dim);
+  font-family:var(--text);font-size:var(--fs-sm);cursor:pointer}
+.crew-row button:hover{color:var(--moz)}
+#crewJson{margin:.5rem 0;padding:.5rem;max-height:9rem;overflow:auto;
+  border-radius:.375rem;background:var(--inset);color:var(--dim);
+  font-family:var(--mono);font-size:var(--fs-2xs);white-space:pre-wrap;
+  word-break:break-all;user-select:all;-webkit-user-select:all}
+.crew-actions{display:flex;gap:.375rem;margin-top:.5rem}
+.crew-actions button{flex:1 1 auto;height:2rem;border:0;border-radius:var(--r-control);
+  background:var(--inset);color:var(--dim);font-family:var(--text);
+  font-size:var(--fs-xs);font-weight:600;cursor:pointer;white-space:nowrap}
+.crew-actions button:hover{color:var(--ink)}
+#crewCopy{flex:0 0 auto;padding:0 .75rem}
+#crewSummary{cursor:pointer;font-size:var(--fs-2xs);color:var(--dim);margin:.25rem 0 .5rem;user-select:none}
+/* While placing, the pointer says the next click puts something down. */
+body[data-placing="true"] canvas,
+body[data-placing="true"] .plan{cursor:crosshair}
+.plan-label{fill:var(--ink);opacity:.72;text-anchor:middle;dominant-baseline:central;
+  pointer-events:none;font-family:var(--text);font-weight:600}
+/* The global trim is for text boxes in the layout; SVG text has its own
+   baseline machinery and does not want it. */
+svg text{text-box:normal}
+
+/* ---------- the room, in a sheet of its own ----------
+   A room used to be a card under the plan. It is a sheet now: it rises inside
+   the building's sheet and stops at the top of the tab panel, so the building,
+   its tabs and the floor being read never leave the screen.
+
+   The travel goes through `transform` and not through the insets, for two
+   reasons that point the same way.
+
+   The first is this project's own: the height is the difference of the two
+   insets, so pinning `bottom` at 0 and animating only `top` does not slide the
+   box — it squashes it to nothing and unrolls it, reflowing everything inside
+   on every frame. Measured at the time: moving the pair, the height held at
+   340px from end to end; moving `top` alone gave 0px on close. With
+   `transform` the box keeps its size and there is no reflow at all.
+
+   The second Erick brought on 2026-09-10, testing in Firefox on a phone: the
+   bottom sheet animated and this did not. Firefox implements anchoring —the
+   position comes out right— but NOT the style and layout interleaving needed
+   to interpolate between `anchor()` values, which is its bug 1924226. An inset
+   that comes from `anchor()` cannot be transitioned there. `transform` does
+   not depend on anchoring, so it animates in every browser. */
+.roomsheet{position:absolute;left:0;right:0;z-index:3;
+  /* Without anchoring —Safari does not ship it until 26— the room rests on the
+     bottom of the panel and takes what it needs, up to a cap. It does not
+     pretend to line up with a box the browser cannot measure. It was the only
+     anchor() in the file without @supports; all the others already had it. */
+  top:auto;bottom:0;max-height:72%;
+  transform:translateY(100dvh);
+  /* Parked means IT IS NOT SEEN, and that has to be said: "it is far away" is
+     not the same, and iOS Safari charged for the difference on 2026-09-19.
+     The anchor —.tabpanel— lives INSIDE the card, which scrolls, and this box
+     does not. The spec says the anchored box then moves with that scroll, and
+     Safari honours it where Chrome does not: measured in Chrome, the ceiling
+     stays pinned at 269 px with the card scrolled to the bottom. So in Safari,
+     scrolling down a busy day's list of sessions, the parked box rises with
+     it; the travel is 100dvh and the margin left, 337 px, was eaten by the 318
+     of the scroll. And iOS's elastic bounce at the bottom, which overshoots
+     depending on the speed of the fling, explains why it sometimes peeked out
+     more than others.
+     Raising the travel to 125dvh —Erick's idea— would have moved the edge, not
+     removed it. A longer list, larger text or a harder fling reaches it again.
+     visibility has no edge: parked is not seen, wherever the scroll comes
+     from.
+     The 0s with a .48s delay on close are so the travel is seen whole and the
+     box switches off on arrival; on open, no delay, or there would be no exit. */
+  visibility:hidden;
+  display:flex;flex-direction:column;
+  /* A ground of its own — white on the light theme, --sunk on the dark one — so
+     the room reads as one step up from the building's card rather than as more
+     of the same panel. Square, not rounded: it fills the tab panel edge to edge
+     and a radius there would show the card's corners through its own. */
+  background:var(--roomsurface);
+  /* color is named again on purpose. The dialog above resolved color:var(--ink)
+     against the ROOT token, and what a child inherits is that resolved colour,
+     not the variable — so any token re-pointed for this subtree would never
+     reach the text unless it is read once more, here. */
+  color:var(--ink);
+  box-shadow:var(--card-highlight),var(--card-edge),var(--card-shadow);
+  transition:transform .48s var(--ease),visibility 0s linear .48s}
+/* One step lighter than the card means the muted text needs one step lighter
+   too: the usual --dim measures 4.13:1 on this ground, just under the line. */
+:root:not([data-theme="light"]) .roomsheet{--dim:#8F96A2}
+@supports (anchor-name:--x){
+  /* With anchoring, the ceiling IS the top of the tab panel, which is the
+     design: the building, its tabs and the floor being read do not go away. */
+  .roomsheet{top:anchor(--tabpanel start);max-height:none}
+}
+.roomsheet.is-open{transform:none;visibility:visible;
+  transition:transform .48s var(--ease),visibility 0s}
+/* There is nothing to read behind it while it is up, and scrolling the card
+   would drag its ceiling along with it.
+
+   And since the light theme turned white, the room and the card behind it are
+   the same white: with nothing more, the room's ceiling disappeared. What is
+   behind is not what is being read now, so it steps back — it drops in
+   opacity while the room is up and comes back whole when it closes. The same
+   curve and the same duration as the room's travel, so it is one gesture and
+   not two. It does not fade out entirely: the tabs are still there and can
+   still be pressed, which is how you get back to the plan. */
+.sheet-body{transition:opacity .48s var(--ease)}
+.sheet-panel:has(.roomsheet.is-open) .sheet-body{overflow:hidden;opacity:.55}
+/* On dark, --roomsurface is already a step lighter than --panel and the edge
+   shows by itself. On light both are white, so the ceiling is stated with a
+   line. */
+[data-theme="light"] .roomsheet{box-shadow:0 -1px 0 0 var(--hair),var(--card-shadow)}
+.room-close{position:absolute;top:.5rem;right:.625rem;z-index:2;width:2.25rem;height:2.25rem}
+.roomsheet-body{flex:1 1 auto;min-height:0;overflow-y:auto;
+  padding:1.5rem 1.1875rem calc(1.5rem + env(safe-area-inset-bottom));
+  scrollbar-width:thin;scrollbar-color:var(--edge) transparent}
+/* The room titles its own sheet, so it is sized like one — the same step as the
+   building's name on the card behind it. */
+.roomcard h3{margin:0 0 .75rem;font-family:var(--display);font-size:var(--fs-lg);
+  font-weight:700;letter-spacing:-.022em;line-height:1.2}
+
+/* ---------- the bubble ----------
+   A room on the plan cannot BE an anchor. Measured, not assumed: an anchor-name
+   on an SVG <path> anchored nothing — the bubble stayed where the flow had put
+   it — while the same name on a <div> in the same document landed clean. So the
+   path lends its box to a div and the div does the anchoring.
+
+   It names the room and nothing else, which is exactly the gap the plan leaves:
+   a room too small for its label keeps quiet, and this is what it answers with
+   when tapped. */
+.tip-anchor{position:absolute;pointer-events:none;anchor-name:--roomtip}
+.roomtip{position:absolute;position-anchor:--roomtip;
+  position-area:block-start;position-try-fallbacks:flip-block;
+  margin-block:.375rem;padding:.75rem;
+  /* Not the control pill's radius: this is a small slab of text, not a button,
+     and at full round the corners eat the first and last letters. */
+  border-radius:.75rem;background:var(--ink);color:var(--panel);
+  font-family:var(--text);font-size:var(--fs-2xs);font-weight:600;line-height:1.35;
+  /* Capped and wrapping: a long room name set on one line reached past the plan
+     and pointed at nothing. */
+  max-width:14rem;white-space:normal;text-wrap:balance;
+  pointer-events:none;z-index:4;
+  opacity:0;transition:opacity .14s ease}
+.roomtip[data-on="true"]{opacity:1}
+/* Over the site. Placed with left/top and not with anchoring: it hangs off no
+   element, but off a point in the world projected onto the screen, and turning
+   that into an invisible anchor would be a detour. The translate lifts it
+   above the point and centres it there. */
+.worldtip{position:fixed;left:0;top:0;transform:translate(-50%,-100%);
+  margin-block:-.5rem;padding:.75rem .875rem;border-radius:.75rem;
+  background:var(--ink);color:var(--panel);
+  font-family:var(--text);font-size:var(--fs-2xs);font-weight:600;line-height:1.35;
+  /* Three short lines, not a paragraph: each one is a different fact and they
+     read top to bottom. 17rem because "C3 · Food Trucks & Outdoor Stage" broken
+     over three lines reads worse than over two. */
+  display:flex;flex-direction:column;gap:.45rem;
+  max-width:17rem;white-space:normal;text-wrap:balance;
+  /* Above the sheet (20): a station's mark on the plan lives inside it, and
+     its bubble has to show on top. The site's bubble only appears with the
+     sheet closed, so nothing changes for it. */
+  pointer-events:none;z-index:21;
+  opacity:0;transition:opacity .14s ease}
+/* The name leads: it goes up a size above the rest of the bubble, which is set
+   at the smallest size on the scale. */
+.worldtip strong{font-size:1rem;font-weight:700}
+/* What sits below is context, not title: it drops in weight and contrast the
+   same way .meta does inside the panel. */
+.worldtip span{font-weight:500;opacity:.72}
+/* And between the two context lines, one breath more than the gap gives: what
+   the thing is and where it is are two different facts, not a list. */
+.worldtip span + span{margin-top:.25rem}
+.worldtip[data-on="true"]{opacity:1}
+.hint{margin:1.75rem 0 0;font-size:var(--fs-xs);color:var(--dim);line-height:1.5}
+/* Not a control and not a floating surface, so it borrows neither radius. */
+.note{margin-top:.8125rem;padding:.625rem .75rem;border-left:2px solid var(--ev);
+  background:var(--inset);border-radius:0 .375rem .375rem 0;font-size:var(--fs-sm);line-height:1.5}
+.corner{position:fixed;left:1rem;bottom:1.375rem;z-index:9;display:flex;flex-direction:column;
+  gap:.625rem;align-items:flex-start;pointer-events:none}
+.corner > *{pointer-events:auto}
+.hud{margin:0;font-size:var(--fs-xs);font-weight:500;color:var(--dim);
+  pointer-events:none;line-height:1.55;max-width:13.125rem}
+@media (max-width:900px){ .hud{display:none} }
+/* Monospace here earns its place: these are figures to be read digit by digit
+   and copied, so tabular width and unambiguous glyphs are the point, not
+   texture. Everywhere else in the chrome the display face does the work. */
+#readout{padding:.6875rem .75rem .625rem;font-family:var(--mono);
+  font-size:var(--fs-2xs);line-height:1.5;min-width:13.5rem}
+#readout[hidden]{display:none}
+.ro{display:grid;grid-template-columns:auto 1fr;gap:.125rem .75rem}
+.ro span{color:var(--dim)}
+.ro b{font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
+#roCode,#roView{display:block;margin:.5rem 0 .4375rem;padding:.4375rem .5rem;border-radius:.375rem;
+  background:var(--inset);color:var(--ink);font-size:var(--fs-2xs);word-break:break-all;
+  user-select:all;-webkit-user-select:all}
+#roView{margin-top:0;color:var(--dim)}
+#roCopy{width:100%;height:1.875rem;border-radius:var(--r-control);background:var(--inset);
+  color:var(--dim);font-family:var(--text);font-size:var(--fs-xs);font-weight:600}
+#roCopy:hover{color:var(--ink)}
+@media (max-width:720px){ .corner{bottom:calc(4.75rem + env(safe-area-inset-bottom))} }
