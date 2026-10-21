@@ -29,7 +29,7 @@ notice saying it is unofficial. Everything about it lives in public_version.py
 and public/; the two builds above come out exactly as they did without it.
 Its bench: tools/with-chrome.sh node tools/check-public.js
 """
-import json, re, shutil, subprocess, sys, pathlib, tempfile
+import json, re, shutil, subprocess, sys, pathlib, tempfile, urllib.parse
 from minify import minify, minify_js
 
 here = pathlib.Path(__file__).parent
@@ -122,6 +122,20 @@ def logo(path):
     if 'fill="#000000"' not in s:
         sys.exit(f'{path.name}: cannot find the group fill, did the export change?')
     return s.replace('fill="#000000"', 'fill="currentColor"')
+
+def favicon(path):
+    """The same mark as the tab's icon, inlined as a data: URL. Without one the
+    browser asks the host for /favicon.ico and logs the 404. An icon has no
+    currentColor to inherit, so it takes the ink of each theme from the
+    system's scheme, the way the page does before anything is saved."""
+    s = logo(path).replace('fill="currentColor"', 'fill="#17181B"')
+    head = s.index('>') + 1
+    s = (s[:head] + '<style>@media (prefers-color-scheme:dark){g{fill:#EDE7DB}}</style>'
+         + s[head:])
+    # Single quotes inside, so the attribute's double ones need no escaping and
+    # an address still ends where public_version.watch() expects it to.
+    s = ' '.join(s.replace('"', "'").split())
+    return 'data:image/svg+xml,' + urllib.parse.quote(s, safe=" '/=:;,(){}.-")
 
 def by_hand(path, hint):
     """A hand-written JSON payload, kept out of model.json on purpose: that file
@@ -475,6 +489,7 @@ parts = {
     '__THREE_JS__': need(here / 'vendor' / 'three.min.js', 'run python3 fetch-vendor.py'),
     '__FONTS__':  need(here / 'vendor' / 'fonts.css',  'run python3 fetch-vendor.py'),
     '__LOGO__':     logo(here / 'mozfest-logo.svg'),
+    '__FAVICON__':  favicon(here / 'mozfest-logo.svg'),
 }
 
 # Check the template, never the output: the payloads are third-party blobs and
