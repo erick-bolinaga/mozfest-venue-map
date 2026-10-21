@@ -127,9 +127,6 @@
         "r-01-b-aster-la-tempesta-indoor-scenary",
         "r-01-b-aster-la-tempesta-kitchen"
       ],
-      "kit": [
-        "ev-stage (La Tempesta Outdoor Terrace)"
-      ],
       "certainty": "confirmado"
     },
     "B1": {
@@ -161,7 +158,7 @@
       "floor": "Third floor"
     },
     "C1": {
-      "name": "Badge Pickup & Info Point",
+      "name": "Badge Pickup & Info Desk",
       "zone": "C",
       "kit": [
         "m-accreditation-point"
@@ -188,7 +185,7 @@
     "C4": {
       "name": "Doha Debates",
       "zone": "E",
-      "certainty": "propuesto",
+      "certainty": "confirmado",
       "kit": [
         "ev-doha-debates"
       ]
@@ -368,6 +365,12 @@
         "e-salvia-to-minus-1"
       ],
       "certainty": "confirmado"
+    },
+    "E-terrace": {
+      "name": "The Terrace",
+      "kit": [
+        "ev-overflow-main-stage"
+      ]
     },
     "D-family": {
       "name": "Family Space",

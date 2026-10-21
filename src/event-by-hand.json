@@ -26,30 +26,6 @@
    ]
   },
   {
-   "id": "art-auto",
-   "label": "Art Auto",
-   "kind": "art",
-   "h": 1.6,
-   "poly": [
-    [
-     164.27,
-     162.26
-    ],
-    [
-     169.45,
-     165.28
-    ],
-    [
-     167.94,
-     167.87
-    ],
-    [
-     162.76,
-     164.85
-    ]
-   ]
-  },
-  {
    "id": "photocall",
    "label": "Photocall",
    "kind": "social",
@@ -107,23 +83,23 @@
    "id": "ev-doha-debates",
    "label": "Doha Debates",
    "kind": "session",
-   "h": 4.0,
+   "h": 2.59,
    "poly": [
     [
-     121.15,
-     165.21
+     119.35,
+     165.45
     ],
     [
-     119.81,
-     172.29
+     118.23,
+     171.4
     ],
     [
-     114.03,
-     171.2
+     115.83,
+     170.95
     ],
     [
-     115.37,
-     164.11
+     116.95,
+     165.0
     ]
    ]
   },
@@ -153,25 +129,25 @@
   },
   {
    "id": "ev-overflow-main-stage",
-   "label": "Overflow main stage",
+   "label": "Main Stage overflow",
    "kind": "stage",
    "h": 1.0,
    "poly": [
     [
-     138.35,
-     162.87
+     143.53,
+     168.34
     ],
     [
-     140.15,
-     153.2
+     145.0,
+     158.36
     ],
     [
-     159.55,
-     156.81
+     166.32,
+     161.49
     ],
     [
-     157.75,
-     166.48
+     164.85,
+     171.47
     ]
    ]
   },
@@ -185,6 +161,10 @@
   },
   {
    "id": "ev-giant-games-2",
+   "retired": true
+  },
+  {
+   "id": "ev-stage (La Tempesta Outdoor Terrace)",
    "retired": true
   }
  ]
