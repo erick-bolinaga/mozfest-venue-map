@@ -15,8 +15,8 @@
 .brand p.notice{font-weight:700;padding:.3em 0;margin:-.3em 0}
 /* The long one closes the menu: read once, by whoever opens it to see what
    this is. Plain text in the menu's own measure, not a row: it does nothing. */
-.pop .about{margin:0;padding:.5rem .6875rem .375rem;display:grid;gap:.375rem;
+.pop .about{margin:0;padding:.6875rem;display:grid;gap:.375rem;
   font-size:var(--fs-xs);line-height:1.5;color:var(--dim)}
 .pop .about p{margin:0}
-.pop .about .credits{font-size:var(--fs-2xs)}
+.pop .about .credits{margin-top:1rem;font-size:var(--fs-2xs)}
 .pop .about a{color:var(--ink);font-weight:600}
