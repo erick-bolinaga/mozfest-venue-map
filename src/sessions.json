@@ -120,6 +120,13 @@
   {
    "date": "2026-10-28",
    "day": "Wed 28",
+   "start": "13:30",
+   "end": "14:15",
+   "title": "Saami Brothers Musical Performance"
+  },
+  {
+   "date": "2026-10-28",
+   "day": "Wed 28",
    "start": "14:15",
    "end": "15:15",
    "title": "Resistance Through Imagination"
@@ -492,6 +499,13 @@
   {
    "date": "2026-10-29",
    "day": "Thu 29",
+   "start": "10:00",
+   "end": "11:00",
+   "title": "Gap Map Jam: Building Shared Intelligence on the AI Ecosystem"
+  },
+  {
+   "date": "2026-10-29",
+   "day": "Thu 29",
    "start": "12:30",
    "end": "13:30",
    "title": "Expanding the Map: Local Knowledge Systems for Technology Builders"
@@ -838,7 +852,7 @@
    "day": "Wed 28",
    "start": "12:30",
    "end": "13:30",
-   "title": "The Civic AI Data Provotype - Mozilla Data Collective"
+   "title": "Common Ground: Cultivating an Ethical AI Data Ecosystem"
   },
   {
    "date": "2026-10-28",
@@ -1021,14 +1035,6 @@
   }
  ],
  "_no_room": [
-  {
-   "place": "(no room)",
-   "date": "2026-10-28",
-   "day": "Wed 28",
-   "start": "13:30",
-   "end": "13:30",
-   "title": "Saami Brothers Musical Performance"
-  },
   {
    "place": "(no room)",
    "date": "2026-10-29",
