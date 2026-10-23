@@ -1,4 +1,11 @@
 {
  "_readme": "Sessions withdrawn by the organisers that the programme API still lists; they are not shown.",
- "sessions": {}
+ "sessions": {
+  "433778": {
+   "title": "Dead Soil, Live Data: Build Your First Soil Sensor"
+  },
+  "433813": {
+   "title": "Crip Intelligence: \"Invalid\" Parameters for Post-Capitalist Imaginaries of AI"
+  }
+ }
 }
