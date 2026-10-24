@@ -391,6 +391,9 @@
   "programme": {
     "Music Stage": {
       "place": "ev-stage"
+    },
+    "Doha Debates": {
+      "place": "ev-doha-debates"
     }
   }
 }
