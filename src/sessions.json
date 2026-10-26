@@ -69,6 +69,13 @@
   {
    "date": "2026-10-28",
    "day": "Wed 28",
+   "start": "13:30",
+   "end": "14:15",
+   "title": "Saami Brothers Musical Performance"
+  },
+  {
+   "date": "2026-10-28",
+   "day": "Wed 28",
    "start": "19:00",
    "end": "19:30",
    "title": "Colla Castellera Jove de Barcelona"
@@ -76,9 +83,23 @@
   {
    "date": "2026-10-29",
    "day": "Thu 29",
+   "start": "13:30",
+   "end": "14:30",
+   "title": "Renata Flores Musical Performance"
+  },
+  {
+   "date": "2026-10-29",
+   "day": "Thu 29",
    "start": "14:15",
    "end": "15:15",
    "title": "Wild Roots: Climate Yoga as Embodied Environmental Education"
+  },
+  {
+   "date": "2026-10-30",
+   "day": "Fri 30",
+   "start": "13:30",
+   "end": "14:30",
+   "title": "Clarissa Bitar Musical Performance"
   }
  ],
  "r-01-b-lotus-main-hall": [
@@ -181,13 +202,6 @@
    "start": "11:15",
    "end": "12:15",
    "title": "Learning Our Inheritance"
-  },
-  {
-   "date": "2026-10-28",
-   "day": "Wed 28",
-   "start": "13:30",
-   "end": "14:15",
-   "title": "Saami Brothers Musical Performance"
   },
   {
    "date": "2026-10-28",
@@ -624,7 +638,7 @@
    "day": "Wed 28",
    "start": "12:30",
    "end": "13:30",
-   "title": "Dead Drops & Decoys: Building Invisible Safety Tech for Women"
+   "title": "Superhero Outfits for the Open and Agentic Web"
   },
   {
    "date": "2026-10-28",
@@ -857,13 +871,6 @@
   {
    "date": "2026-10-30",
    "day": "Fri 30",
-   "start": "10:00",
-   "end": "11:00",
-   "title": "Superhero Outfits for the Open and Agentic Web"
-  },
-  {
-   "date": "2026-10-30",
-   "day": "Fri 30",
    "start": "12:30",
    "end": "13:30",
    "title": "Building Tools For Us: Muslims Shaping the Digital Future with Narrative Power"
@@ -908,8 +915,8 @@
   {
    "date": "2026-10-29",
    "day": "Thu 29",
-   "start": "10:00",
-   "end": "11:00",
+   "start": "12:30",
+   "end": "13:30",
    "title": "Building partnerships to investigate and resist data centers’ thirsty expansion"
   },
   {
@@ -946,6 +953,13 @@
    "start": "15:30",
    "end": "16:30",
    "title": "Abolish AI vs. Build a People's AI: A Debate from Take Back Tech to MozFest"
+  },
+  {
+   "date": "2026-10-30",
+   "day": "Fri 30",
+   "start": "16:45",
+   "end": "17:45",
+   "title": "Dead Drops & Decoys: Building Invisible Safety Tech for Women"
   }
  ],
  "r-03-b-rosa-workshop": [
@@ -1065,22 +1079,6 @@
   }
  ],
  "_no_room": [
-  {
-   "place": "(no room)",
-   "date": "2026-10-29",
-   "day": "Thu 29",
-   "start": "13:30",
-   "end": "14:30",
-   "title": "Renata Flores Musical Performance"
-  },
-  {
-   "place": "(no room)",
-   "date": "2026-10-30",
-   "day": "Fri 30",
-   "start": "13:30",
-   "end": "14:30",
-   "title": "Clarissa Bitar Musical Performance"
-  },
   {
    "place": "Paral·lel 62 (Off-Site Venue)",
    "date": "2026-10-30",
