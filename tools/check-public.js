@@ -97,6 +97,14 @@ async function boot(file, query = '') {
     INDEX.filter(e => e.data && D.floors.some(f => f.rooms.some(r => r.id === e.data.id && r.kind === 'crew'))).length`);
   ok('and its search has staff places in it', ctlStaff > 0, `${ctlStaff}`);
   if (hasStations) ok('and its code, unfiltered, would name a station', /\b[A-G]\d-\d+\b/.test(JSON.stringify(await evaluate(ctl.send, `STATIONS.map(p => p.id)`))));
+  /* Kit marked 'public_map': false is in the volunteers' build and only there.
+     The public repository leaves it out too, so there the control does not apply. */
+  const hasHidden = require('../src/event-by-hand.json').items.some(e => e.public_map === false);
+  const ctlKit = await evaluate(ctl.send, `({n: EVENT.length, hidden: EVENT.filter(e => e.public_map === false).map(e => e.id),
+    polys: EVENT.filter(e => e.public_map === false && e.poly).map(e => e.poly),
+    grid: {bits: ROUTES.bits, width: ROUTES.width, height: ROUTES.height, x0: ROUTES.x0, z0: ROUTES.z0, cell: ROUTES.cell}})`);
+  if (hasHidden) ok('and kit kept from the public', ctlKit.hidden.length > 0, ctlKit.hidden.join(' '));
+  else console.log('  · no kit kept from the public in this repository: its control does not apply');
   await ctl.close();
 
   console.log('\n== 3a · the rung is the visitor\'s, whatever the URL asks for ==');
@@ -157,6 +165,38 @@ async function boot(file, query = '') {
   ok('and its bubble says «Staff only», once', kitStaff.bubble === 'Staff only', JSON.stringify(kitStaff.bubble));
   const kitStage = await cardOf('ev-stage');
   ok('a public kit item\'s card does (control)', kitStage.button, JSON.stringify(kitStage));
+  /* Not even «Staff only»: a shape there would still say where. */
+  const hid = await ev(`({left: EVENT.filter(e => e.public_map === false).map(e => e.id), n: EVENT.length})`);
+  ok('the kit kept from the public is not there at all, not even as «Staff only»', hid.left.length === 0, hid.left.join(' '));
+  ok('  ...the public kit is the volunteers\' minus exactly that', hid.n === ctlKit.n - ctlKit.hidden.length,
+     `${hid.n} = ${ctlKit.n} − ${ctlKit.hidden.length}`);
+  /* Nor as cells of the walking grid: decoded, ROUTES would draw the hidden kit
+     as rectangles nobody walks through. The public grid must be the volunteers'
+     with only those cells opened: each difference closed there and open here,
+     each within the kit or its clearance (routes.py: 0.3 m, plus half a cell's
+     diagonal). Without hidden kit the two grids are the same. */
+  const pubGrid = await ev(`({bits: ROUTES.bits, width: ROUTES.width, height: ROUTES.height, x0: ROUTES.x0, z0: ROUTES.z0, cell: ROUTES.cell})`);
+  const g = ctlKit.grid, cb = Buffer.from(g.bits, 'base64'), pb = Buffer.from(pubGrid.bits, 'base64');
+  const sameFrame = ['width', 'height', 'x0', 'z0', 'cell'].every(k => g[k] === pubGrid[k]);
+  const segDist = (x, z, [x1, z1], [x2, z2]) => {
+    const dx = x2 - x1, dz = z2 - z1, t = Math.max(0, Math.min(1, ((x - x1) * dx + (z - z1) * dz) / (dx * dx + dz * dz)));
+    return Math.hypot(x - x1 - t * dx, z - z1 - t * dz);
+  };
+  const inPoly = (x, z, P) => P.reduce((c, a, i) => { const b = P[(i + 1) % P.length];
+    return (a[1] > z) !== (b[1] > z) && x < (b[0] - a[0]) * (z - a[1]) / (b[1] - a[1]) + a[0] ? !c : c; }, false);
+  const nearKit = (x, z) => ctlKit.polys.some(P => inPoly(x, z, P)
+    || P.some((a, i) => segDist(x, z, a, P[(i + 1) % P.length]) <= 0.3 + g.cell * Math.SQRT1_2));
+  let diff = 0, wrongWay = 0, astray = 0;
+  for (let k = 0; sameFrame && k < g.width * g.height; k++) {
+    const c = (cb[k >> 3] >> (k & 7)) & 1, p = (pb[k >> 3] >> (k & 7)) & 1;
+    if (c === p) continue;
+    diff++;
+    if (!(c === 0 && p === 1)) wrongWay++;
+    if (!nearKit(g.x0 + (k % g.width + .5) * g.cell, g.z0 + (Math.floor(k / g.width) + .5) * g.cell)) astray++;
+  }
+  ok('the walking grid does not carry the hidden kit either: only its cells open up, nothing else changes',
+     sameFrame && wrongWay === 0 && astray === 0 && (ctlKit.polys.length ? diff > 0 : diff === 0),
+     `${diff} cells differ, ${wrongWay} the wrong way, ${astray} away from the kit`);
 
   console.log('\n== 3e · no working notes ==');
   const data = await readData(pub.send);

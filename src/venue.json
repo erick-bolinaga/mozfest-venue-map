@@ -68,7 +68,7 @@
       "part": "p-b-aster-harmonia"
     },
     "C": {
-      "name": "Outside",
+      "name": "Space C",
       "zone": null,
       "building": null,
       "part": null
@@ -177,8 +177,7 @@
       "name": "Open Source House",
       "zone": "E",
       "kit": [
-        "ev-art-tent (Firefox House)",
-        "ev-giant-games-3"
+        "ev-art-tent (Firefox House)"
       ],
       "certainty": "confirmado"
     },
@@ -381,10 +380,7 @@
     "D-quiet": {
       "name": "Quiet Reflection & Silent Prayer Space",
       "kit": [
-        "ev-quiet-office & prayer space",
-        "ev-quiet-office & prayer space_2",
-        "ev-quiet-office & prayer space_3",
-        "ev-quiet-office & prayer space_4"
+        "ev-quiet-office & prayer space"
       ]
     }
   },

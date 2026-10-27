@@ -221,6 +221,18 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   .dock{bottom:calc(.75rem + env(safe-area-inset-bottom))}
 }
 
+/* ---------- no WebGL ----------
+   The card that stands in for the map, and nothing beside it that would not
+   answer: with the script stopped, search, menu and dock are dead. */
+.nogl{position:fixed;z-index:12;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:min(26rem, calc(100% - 1.875rem));padding:1.125rem 1.25rem 1.25rem}
+.nogl[hidden]{display:none}
+.nogl h2{margin:0 0 .625rem;font-family:var(--display);font-size:var(--fs-lg);font-weight:700;
+  letter-spacing:-.015em;line-height:1.15}
+.nogl p{margin:.5rem 0 0;font-size:var(--fs-sm);line-height:1.45;color:var(--dim)}
+.nogl b{color:var(--ink);font-weight:600}
+[data-webgl="off"] .topnav,[data-webgl="off"] .dock{display:none}
+
 /* ---------- the route card ----------
    Sits on the dock like a small sheet. The orange is the festival's, the same
    as the line drawn on the ground, so the card and the map read as one thing. */

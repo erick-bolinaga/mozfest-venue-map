@@ -166,6 +166,94 @@
   {
    "id": "ev-stage (La Tempesta Outdoor Terrace)",
    "retired": true
+  },
+  {
+   "id": "m-accreditation-point",
+   "label": "Accreditation point",
+   "kind": "service",
+   "h": 2.5,
+   "poly": [
+    [
+     195.66,
+     137.69
+    ],
+    [
+     204.66,
+     137.69
+    ],
+    [
+     204.66,
+     146.69
+    ],
+    [
+     195.66,
+     146.69
+    ]
+   ]
+  },
+  {
+   "id": "m-merch-store",
+   "label": "Merch store",
+   "kind": "service",
+   "h": 2.5,
+   "poly": [
+    [
+     205.5,
+     150.79
+    ],
+    [
+     208.22,
+     149.52
+    ],
+    [
+     209.49,
+     152.24
+    ],
+    [
+     206.77,
+     153.51
+    ]
+   ]
+  },
+  {
+   "id": "ev-giant-games-3",
+   "retired": true
+  },
+  {
+   "id": "ev-quiet-office & prayer space_2",
+   "retired": true
+  },
+  {
+   "id": "ev-quiet-office & prayer space_3",
+   "retired": true
+  },
+  {
+   "id": "ev-quiet-office & prayer space_4",
+   "retired": true
+  },
+  {
+   "id": "ev-stage",
+   "label": "Stage",
+   "kind": "stage",
+   "h": 1.0,
+   "poly": [
+    [
+     236.79,
+     109.76
+    ],
+    [
+     235.75,
+     115.69
+    ],
+    [
+     232.88,
+     115.19
+    ],
+    [
+     233.93,
+     109.27
+    ]
+   ]
   }
  ]
 }

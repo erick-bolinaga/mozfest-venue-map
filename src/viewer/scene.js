@@ -1,6 +1,18 @@
 /* ---------- scene ---------- */
 const scene = new THREE.Scene();
-const renderer = new THREE.WebGLRenderer({antialias:true});
+/* Lockdown Mode on an iPhone switches WebGL off (WebKit's WebGLEnabled carries
+   disableInLockdownMode), and Three.js throws here. Every piece after this one
+   is the same script, so nothing else runs: the page stayed a bare header over
+   an empty background, its buttons dead (a captain, 2026-10-27). The throw
+   stays — there is no map to run without — but first the page says why. */
+const renderer = (()=>{
+  try{ return new THREE.WebGLRenderer({antialias:true}); }
+  catch(err){
+    document.documentElement.dataset.webgl = 'off';
+    document.getElementById('nogl').hidden = false;
+    throw err;
+  }
+})();
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true;

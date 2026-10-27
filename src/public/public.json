@@ -29,7 +29,8 @@
       "\\bpor confirmar\\b",
       "\\bErick\\b",
       "\\bojo\\b",
-      "\\b[A-G]\\d-\\d+\\b"
+      "\\b[A-G]\\d-\\d+\\b",
+      "\"public_map\":\\s*false"
     ]
   }
 }

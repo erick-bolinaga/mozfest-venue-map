@@ -28,6 +28,16 @@
   <button class="ico" id="resetBtn" aria-label="Reset map" title="Reset map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.3"/><circle cx="12" cy="12" r="7.9"/><path d="M12 2.4v2.5M12 19.1v2.5M2.4 12h2.5M19.1 12h2.5"/></svg></button>
 </nav>
 
+<!-- What the page says when it has no WebGL to draw with. scene.js unhides it
+     just before the script stops; until then nobody sees it. On an iPhone the
+     usual cause is Lockdown Mode, and Safari can lift it for one site
+     (support.apple.com/105120), which brings the whole map back. -->
+<section class="shell nogl" id="nogl" hidden role="alert">
+  <h2>The map can't be drawn here</h2>
+  <p>It needs WebGL, and this browser has it switched off.</p>
+  <p><b>On an iPhone or iPad this is usually Lockdown Mode.</b> In Safari, tap the page menu button beside the address, choose Website Settings and turn off Lockdown Mode for this site. Then reload the page.</p>
+</section>
+
 <!-- The route card. It rises from the bottom like the sheet it replaces while
      a route is up: from where, to where — each one changeable — and the one or
      two lines that are all the directions anyone needs outside. The line on the

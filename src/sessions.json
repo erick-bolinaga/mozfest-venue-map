@@ -200,6 +200,13 @@
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "11:15",
+   "end": "11:30",
+   "title": "MozFest Opening 2026"
+  },
+  {
+   "date": "2026-10-28",
+   "day": "Wed 28",
+   "start": "11:30",
    "end": "12:15",
    "title": "Learning Our Inheritance"
   },
@@ -258,6 +265,13 @@
    "start": "18:00",
    "end": "19:00",
    "title": "Scattering The Seed"
+  },
+  {
+   "date": "2026-10-30",
+   "day": "Fri 30",
+   "start": "19:00",
+   "end": "19:15",
+   "title": "MozFest Closing 2026"
   }
  ],
  "r-01-b-salvia-middle-room": [
@@ -415,7 +429,7 @@
    "day": "Fri 30",
    "start": "10:00",
    "end": "11:00",
-   "title": "Mycelia & Madness: Ecologies, Technology, & the Poetics of World-Building"
+   "title": "A wild idea - from infrastructural power to abolition"
   },
   {
    "date": "2026-10-30",
@@ -480,7 +494,7 @@
    "day": "Thu 29",
    "start": "10:00",
    "end": "11:00",
-   "title": "Hints of a new open platform"
+   "title": "How To Build Your Own AI Computer: A Look at the Open Source Personal AI Stack"
   },
   {
    "date": "2026-10-29",
@@ -522,7 +536,7 @@
    "day": "Fri 30",
    "start": "15:30",
    "end": "16:30",
-   "title": "Voice Is the Interface: Rethinking Financial Access for the Next Billion"
+   "title": "Measuring the Future of Personal Intelligence"
   },
   {
    "date": "2026-10-30",
@@ -901,13 +915,6 @@
   {
    "date": "2026-10-28",
    "day": "Wed 28",
-   "start": "15:30",
-   "end": "16:30",
-   "title": "Intimacy When The Other Side is a Variable"
-  },
-  {
-   "date": "2026-10-28",
-   "day": "Wed 28",
    "start": "16:45",
    "end": "17:45",
    "title": "Can the Workplace Web Remain Open?"
@@ -1039,13 +1046,6 @@
    "start": "15:30",
    "end": "16:30",
    "title": "Community Design Principles Lab with Out in Tech"
-  },
-  {
-   "date": "2026-10-30",
-   "day": "Fri 30",
-   "start": "16:45",
-   "end": "17:45",
-   "title": "A wild idea - from infrastructural power to abolition"
   }
  ],
  "r-04-b-aster-aula-gran": [

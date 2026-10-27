@@ -459,7 +459,9 @@ MOZFEST = venue(here / 'venue.json', EVENT)
 # entrance cannot reach, stops the build: a route that silently cannot be
 # walked is worse than no route.
 import routes
-ROUTES = routes.build(json.loads(MODEL), EVENT,
+# The public grid is built from the public kit: hidden kit would otherwise
+# stay in it as closed cells (public_version.shown()).
+ROUTES = routes.build(json.loads(MODEL), public_version.shown(EVENT) if PUBLIC else EVENT,
                         json.loads(need(here / 'doors.json', 'which doors a route uses, by hand')),
                         json.loads(need(here / 'walkable.json', 'where people walk outside the zones, by hand')))
 _err = routes.validate(ROUTES, {k: v for k, v in json.loads(need(here / 'sessions.json', '')).items()

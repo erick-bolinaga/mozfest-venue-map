@@ -138,6 +138,15 @@ def _without_notes(x):
     return x
 
 
+def shown(event):
+    """The kit the public build carries: all but what is marked 'public_map':
+    false, whose place is not to be shared. Not even as a staff-only shape, and
+    not as cells of the walking grid either: build.py builds the public grid
+    from this list, or the hidden kit would still be there for anyone decoding
+    ROUTES, as rectangles nobody can walk through."""
+    return [it for it in event if it.get('public_map') is not False]
+
+
 def data(parts):
     """The payloads, reduced to what a visitor's map needs. Returns new parts."""
     p = dict(parts)
@@ -151,6 +160,12 @@ def data(parts):
     zones = {'z-' + z['zid'] for z in D.get('zones', [])}
     D['zones'] = []
     D['names'] = {k: v for k, v in D.get('names', {}).items() if k not in zones}
+
+    # Kit marked 'public_map': false leaves whole; see shown().
+    kept = shown(EV)
+    hidden = {it['id'] for it in EV} - {it['id'] for it in kept}
+    EV = kept
+    MZ = {k: v for k, v in MZ.items() if k not in hidden}
 
     # Staff-only: the shape stays, the name and the id go. A crew id can carry
     # a person's name (it did), so every one becomes staff-N, everywhere.
