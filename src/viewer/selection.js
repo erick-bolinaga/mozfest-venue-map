@@ -124,10 +124,12 @@ function tipContent(u){
   const mk = MOZROOM[u.id];
   const key = mozKey(u.id, k) ||
     (mk ? [mk.code, mk.name].filter(Boolean).join(' · ') : null);
+  const outside = u.kind === 'event' && u.ev ? outsideLine(u.ev.poly) : '';
   worldTip.innerHTML =
     `<strong>${esc(looksLikeId(raw) ? tidy(u.id) : raw)}</strong>` +
     (type ? `<span>${esc(type)}</span>` : '') +
     (key  ? `<span>${esc(key)}</span>`  : '') +
+    (outside ? `<span>${esc(outside)}</span>` : '') +
     (u.where ? `<span>${esc(u.where)}</span>` : '');
 }
 function showWorldTip(mesh, u){

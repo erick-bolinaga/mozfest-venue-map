@@ -165,6 +165,19 @@ async function boot(file, query = '') {
   ok('and its bubble says «Staff only», once', kitStaff.bubble === 'Staff only', JSON.stringify(kitStaff.bubble));
   const kitStage = await cardOf('ev-stage');
   ok('a public kit item\'s card does (control)', kitStage.button, JSON.stringify(kitStage));
+  /* Space C is the volunteers' word for the outdoors, like their zones: the
+     visitor's map does not use it, on a card, a bubble or a search row. */
+  const noSpaceC = await ev(`(() => {
+    const said = [];
+    EVENT.filter(e => e.poly).forEach(e => {
+      const m = picks.find(x => x.userData && x.userData.id === e.id);
+      if(!m) return;
+      select(m); said.push(document.querySelector('.worldtip').textContent + card.textContent); select(null);
+    });
+    $('#q').value = 'Open Source House'; runSearch(); said.push(hits.map(h => h.sub).join(' ')); $('#q').value = ''; runSearch();
+    return {looked: said.length, hits: said.filter(t => /Space C/.test(t)).length};
+  })()`);
+  ok('nothing outside says Space C to a visitor', noSpaceC.looked > 1 && noSpaceC.hits === 0, JSON.stringify(noSpaceC));
   /* Not even «Staff only»: a shape there would still say where. */
   const hid = await ev(`({left: EVENT.filter(e => e.public_map === false).map(e => e.id), n: EVENT.length})`);
   ok('the kit kept from the public is not there at all, not even as «Staff only»', hid.left.length === 0, hid.left.join(' '));

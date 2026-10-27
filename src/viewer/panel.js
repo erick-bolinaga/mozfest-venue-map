@@ -473,7 +473,8 @@ function info(u){
       ? `<div class="key"><span>MozFest</span>${esc(
           [MOZROOM[u.id].code, MOZROOM[u.id].name].filter(Boolean).join(' · '))}</div>`
       : '')+
-    (moz ? `<div class="key"><span>MozFest key</span>${esc(moz)}</div>` : ''),
+    (moz ? `<div class="key"><span>MozFest key</span>${esc(moz)}</div>` : '')+
+    (kit && outsideLine(kit.poly) ? `<div class="key"><span>Outside</span>${esc(outsideLine(kit.poly))}</div>` : ''),
     /* A way there, when there is one: a building with a public door, or a
        piece of the festival's kit standing in the open. */
     kit && kit.poly

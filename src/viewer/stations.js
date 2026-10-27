@@ -18,6 +18,17 @@ const zoneOf = (x, z) => { const q = D.zones.find(w => inPolygon(x, z, w.poly));
    door (F0) falls in E's polygon and the overflow one (D5) does too, and both
    belong to another zone. Without a code — the test ones — the polygon does. */
 const stationZone = p => p.code ? (p.code[0] === 'G' ? 'F' : p.code[0]) : zoneOf(p.x, p.z);
+/* Space C is every outside area of every volunteer zone: the Book's glossary,
+   «All Outside Areas = Space C», and Erick at the venue on 2026-10-27, "all
+   the zones". venue.json gives the letter C this name. What stands outside
+   says so, with its zone; it is the volunteers' word, like the zones, so it
+   starts at their rung and a visitor never reads it. */
+const OUTSIDE_SPACE = 'Space C';
+function outsideLine(poly){
+  if(!atLeast('volunteer') || !poly) return '';
+  const zone = zoneOf(poly.reduce((a, p) => a + p[0], 0) / poly.length, poly.reduce((a, p) => a + p[1], 0) / poly.length);
+  return OUTSIDE_SPACE + (zone ? ' · Zone ' + zone : '');
+}
 const polygonDistance = (x, z, poly) => {
   if(inPolygon(x, z, poly)) return 0;
   let d = Infinity;
@@ -72,7 +83,7 @@ function whereIs(p){
      one of them since the day it was placed, and from the 3D there was no way
      to tell. */
   const covered = EVENT.find(it => it.poly && it.h > 0 && inPolygon(p.x, p.z, it.poly));
-  return {zone, inZone: !!zoneOf(p.x, p.z), covered: covered ? covered.label : null,
+  return {zone, outside: true, inZone: !!zoneOf(p.x, p.z), covered: covered ? covered.label : null,
           where: cand.length ? cand[0].txt : ''};
 }
 /* A new id: the code without spaces and the first free number — E3-2,
@@ -138,7 +149,8 @@ const PRIORITY_LABEL = {high: 'High priority', medium: 'Medium priority', low: '
    The Main Stage ones say their team, because they belong to no zone captain. */
 const stationLine = p => [('Volunteer post ' + (p.code || '')).trim(), stationCount(p),
   PRIORITY_LABEL[p.priority], p.team ? p.team + ' team' : '', p.vc ? 'VC' : ''].filter(Boolean).join(' \u00b7 ');
-const stationWhere = w => (w.zone ? `Zone ${w.zone}` : 'Outside every zone') + (w.where ? ` \u00b7 ${w.where}` : '');
+const stationWhere = w => (w.outside && atLeast('volunteer') ? OUTSIDE_SPACE + ' \u00b7 ' : '') +
+  (w.zone ? `Zone ${w.zone}` : 'Outside every zone') + (w.where ? ` \u00b7 ${w.where}` : '');
 function drawStations(){
   while(crewGroup.children.length) crewGroup.remove(crewGroup.children[0]);
   /* The previous pass's ones leave picks, or the ray would go on hitting

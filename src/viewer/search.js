@@ -143,7 +143,8 @@ const INDEX = [
     return {label: e.label, badge: 'Provisional', alias: [c, place].filter(Boolean).join(' '),
             sub: (((D.kinds||{})[e.kind]||{}).label || 'Event') + (c ? ' · ' + c : '') +
                  (place && place !== e.label ? ' · ' + place : '') +
-                 (r ? ' · ' + r.name + ' · ' + featLabel(f.feat) : ''),
+                 (r ? ' · ' + r.name + ' · ' + featLabel(f.feat) : '') +
+                 (outsideLine(e.poly) ? ' · ' + OUTSIDE_SPACE : ''),
             poly: e.poly || (r && r.poly), floor: f || null,
             data: r ? {kind:'room', name:r.name, area:r.area, id:r.id}
                     : {id:e.id, kind:'event', name:e.label, h:e.h, est:true, ev:e}};
