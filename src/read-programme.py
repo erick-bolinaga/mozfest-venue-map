@@ -25,25 +25,97 @@ Those sessions go by hand in withdrawn.json, by sessionId, and are not hung;
 `--check` says whether the API still brings them and warns once they are no
 longer needed.
 
+Some stages are published as BLOCKS: a session titled with its own place
+(«Open Source House Stage», fourteen of them) whose real agenda is in its
+description, a «10:00 to 10:25» line and the talk below it. The list carries
+no description for any session, so each block is opened through its own
+detail and becomes one row per talk, titled with the first line under its
+time: what follows is a speaker or a subtitle, with nothing to tell which
+(2026-10-29). agendas.json, by hand, fixes the titles that need it. A block
+whose detail cannot be read stays whole.
+
     --check          read the API, compare with sessions.json, write nothing
     --write          write sessions.json
     --from FILE      read from a saved dump instead of the network, to work without one
     --force          write even if more than five sessions would go at once
 """
-import json, pathlib, re, sys, urllib.request, collections, datetime
+import json, pathlib, re, sys, urllib.request, collections, datetime, html
 
 here = pathlib.Path(__file__).parent
 API = ('https://apiro.accelevents.com/r/events/mozilla-festival-2026'
        '/session/v2/get-all-sessions?size=500')
+DETAIL = 'https://apiro.accelevents.com/r/events/mozilla-festival-2026/session/{}'
 WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+SLOT = re.compile(r'^(\d{1,2}):(\d{2})\s*(?:to|-|–)\s*(\d{1,2}):(\d{2})$')
+
+
+def get(url):
+    req = urllib.request.Request(url, headers={'User-Agent': 'mozfest-mapa/1.0'})
+    with urllib.request.urlopen(req, timeout=60) as r:
+        return json.loads(r.read().decode())
 
 
 def fetch(source=None):
     if source:
         return json.loads(pathlib.Path(source).read_text())
-    req = urllib.request.Request(API, headers={'User-Agent': 'mozfest-mapa/1.0'})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return json.loads(r.read().decode())
+    return get(API)
+
+
+def is_block(s):
+    """A session titled with its own place is a block with an agenda inside."""
+    title = (s.get('title') or '').strip().lower()
+    return bool(title) and title == (s.get('locationName') or s.get('location') or '').strip().lower()
+
+
+def title_of(line, block, start, hand):
+    """The title a talk is shown with: its slot's, by hand; else the hand title
+    whose key the line is or starts with (the longest); else the line."""
+    if f'{block} {start}' in hand.get('slots', {}):
+        return hand['slots'][f'{block} {start}']
+    keys = [k for k in hand.get('titles', {}) if line == k or line.startswith(k + ' ')]
+    return hand['titles'][max(keys, key=len)] if keys else line
+
+
+def agenda(block, description, hand):
+    """The talks in a block's description: (start, end, title), each titled with
+    the first line under its time."""
+    text = re.sub(r'<br\s*/?>|</(?:div|p|li|h\d)>', '\n', description or '')
+    lines = [l.strip() for l in html.unescape(re.sub(r'<[^>]+>', '', text)).replace('\xa0', ' ').splitlines()]
+    lines = [l for l in lines if l]
+    talks = []
+    for i, l in enumerate(lines):
+        m = SLOT.match(l)
+        if m and i + 1 < len(lines) and not SLOT.match(lines[i + 1]):
+            h1, m1, h2, m2 = m.groups()
+            start = f'{int(h1):02d}:{m1}'
+            talks.append((start, f'{int(h2):02d}:{m2}', title_of(lines[i + 1], block, start, hand)))
+    return talks
+
+
+def open_blocks(data, online):
+    """Each block becomes its talks, as sessions like the others; what cannot be
+    opened stays as it came. Returns the sessions and what happened, to print."""
+    hand = json.loads((here / 'agendas.json').read_text())
+    out, opened, kept = [], [], []
+    for s in data:
+        if not is_block(s):
+            out.append(s)
+            continue
+        try:
+            talks = (agenda(s['sessionId'], get(DETAIL.format(s['sessionId'])).get('description'), hand)
+                     if online else [])
+        except Exception as e:
+            talks, why = [], str(e)
+        else:
+            why = 'no network (--from)' if not online else 'no «10:00 to 10:25» lines in it'
+        if not talks:
+            out.append(s)
+            kept.append((s, why))
+            continue
+        date = s['startTime'][:10]
+        out += [{**s, 'title': t, 'startTime': f'{date} {a}', 'endTime': f'{date} {b}'} for a, b, t in talks]
+        opened.append((s, len(talks)))
+    return out, opened, kept
 
 
 def rooms_by_code():
@@ -158,8 +230,9 @@ def main():
 
     by_code, by_name = rooms_by_code()
     withdrawn = load_withdrawn()
-    new, no_room, loose = convert(data, by_code, by_name, withdrawn)
     in_api = {s.get('sessionId'): s for s in data}
+    sessions, opened, kept = open_blocks(data, source is None)
+    new, no_room, loose = convert(sessions, by_code, by_name, withdrawn)
 
     old = json.loads((here / 'sessions.json').read_text())
     readme = old.pop('_readme', None)
@@ -167,6 +240,11 @@ def main():
 
     print(f'{len(data)} sessions in the API · {sum(len(v) for v in new.values())} '
           f'hung from {len(new)} rooms')
+    if opened:
+        print(f'  blocks with an agenda inside: {len(opened)}, opened into '
+              f'{sum(n for _, n in opened)} talks')
+    for s, why in kept:
+        print(f"  CAREFUL: block {s['sessionId']} ({s['startTime']}, {s['title'][:40]}) kept whole: {why}")
     for t, xs in (('added', b - a), ('removed', a - b)):
         print(f'  {t}: {len(xs)}')
         for x in sorted(xs)[:14]:

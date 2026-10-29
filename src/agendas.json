@@ -1,0 +1,13 @@
+{
+ "_readme": "Titles for the talks inside a programme block (a session titled with its own place, its agenda in the description): first line as published -> title shown. Written by hand.",
+ "titles": {
+  "Sendmarc": "Sendmarc",
+  "Telepath": "Telepath — A New Kind of Computer",
+  "DPGA4AI": "DPGA4AI — Collection launch",
+  "Current AI": "Current AI — AI Potluck Asks: What Do You Need to Make AI Yours?",
+  "Community Lightning Talks": "Community Lightning Talks (open signup)"
+ },
+ "slots": {
+  "455670 16:20": "Privacy Concept"
+ }
+}

@@ -5,99 +5,218 @@
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "10:00",
+   "end": "10:25",
+   "title": "Inanimate"
+  },
+  {
+   "date": "2026-10-28",
+   "day": "Wed 28",
+   "start": "10:25",
+   "end": "10:50",
+   "title": "Union AI"
+  },
+  {
+   "date": "2026-10-28",
+   "day": "Wed 28",
+   "start": "10:50",
    "end": "11:15",
-   "title": "Open Source House Stage"
+   "title": "Community Lightning Talks (open signup)"
   },
   {
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "12:30",
+   "end": "12:55",
+   "title": "Telepath — A New Kind of Computer"
+  },
+  {
+   "date": "2026-10-28",
+   "day": "Wed 28",
+   "start": "12:55",
    "end": "13:30",
-   "title": "Open Source House Stage"
+   "title": "OpenMined"
   },
   {
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "13:30",
+   "end": "13:55",
+   "title": "SAT - Session 1"
+  },
+  {
+   "date": "2026-10-28",
+   "day": "Wed 28",
+   "start": "13:55",
    "end": "14:15",
-   "title": "Open Source House Stage"
+   "title": "Community Lightning Talks (open signup)"
   },
   {
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "15:30",
+   "end": "15:55",
+   "title": "Flower AI"
+  },
+  {
+   "date": "2026-10-28",
+   "day": "Wed 28",
+   "start": "15:55",
+   "end": "16:20",
+   "title": "Firefox"
+  },
+  {
+   "date": "2026-10-28",
+   "day": "Wed 28",
+   "start": "16:20",
    "end": "16:45",
-   "title": "Open Source House Stage"
+   "title": "Privacy Concept"
   },
   {
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "16:45",
+   "end": "17:10",
+   "title": "Community Lightning Talks (open signup)"
+  },
+  {
+   "date": "2026-10-28",
+   "day": "Wed 28",
+   "start": "17:10",
    "end": "17:35",
-   "title": "Open Source House Stage"
+   "title": "Themis AI"
   },
   {
    "date": "2026-10-29",
    "day": "Thu 29",
    "start": "10:00",
+   "end": "10:25",
+   "title": "Community Lightning Talks (open signup)"
+  },
+  {
+   "date": "2026-10-29",
+   "day": "Thu 29",
+   "start": "10:25",
+   "end": "10:50",
+   "title": "Galtea"
+  },
+  {
+   "date": "2026-10-29",
+   "day": "Thu 29",
+   "start": "10:50",
    "end": "11:15",
-   "title": "Open Source House Stage"
+   "title": "Hounddog.ai"
   },
   {
    "date": "2026-10-29",
    "day": "Thu 29",
    "start": "13:30",
+   "end": "13:55",
+   "title": "Air messenger"
+  },
+  {
+   "date": "2026-10-29",
+   "day": "Thu 29",
+   "start": "13:55",
    "end": "14:15",
-   "title": "Open Source House Stage"
+   "title": "DPGA4AI — Collection launch"
   },
   {
    "date": "2026-10-29",
    "day": "Thu 29",
    "start": "15:30",
    "end": "16:45",
-   "title": "Open Source House Stage"
+   "title": "Community Lightning Talks (open signup)"
   },
   {
    "date": "2026-10-29",
    "day": "Thu 29",
    "start": "16:45",
+   "end": "17:10",
+   "title": "Jozu"
+  },
+  {
+   "date": "2026-10-29",
+   "day": "Thu 29",
+   "start": "17:10",
    "end": "17:35",
-   "title": "Open Source House Stage"
+   "title": "Community Lightning Talks (open signup)"
   },
   {
    "date": "2026-10-30",
    "day": "Fri 30",
    "start": "10:00",
+   "end": "10:25",
+   "title": "Current AI — AI Potluck Asks: What Do You Need to Make AI Yours?"
+  },
+  {
+   "date": "2026-10-30",
+   "day": "Fri 30",
+   "start": "10:25",
+   "end": "10:50",
+   "title": "Community Lightning Talks (open signup)"
+  },
+  {
+   "date": "2026-10-30",
+   "day": "Fri 30",
+   "start": "10:50",
    "end": "11:15",
-   "title": "Open Source House Stage"
+   "title": "Community Lightning Talks (open signup)"
   },
   {
    "date": "2026-10-30",
    "day": "Fri 30",
    "start": "12:30",
+   "end": "12:55",
+   "title": "Roseman Labs"
+  },
+  {
+   "date": "2026-10-30",
+   "day": "Fri 30",
+   "start": "12:55",
    "end": "13:30",
-   "title": "Open Source House Stage"
+   "title": "Sendmarc"
   },
   {
    "date": "2026-10-30",
    "day": "Fri 30",
    "start": "13:30",
+   "end": "13:55",
+   "title": "Sol PBC"
+  },
+  {
+   "date": "2026-10-30",
+   "day": "Fri 30",
+   "start": "13:55",
    "end": "14:15",
-   "title": "Open Source House Stage"
+   "title": "Community Lightning Talks (open signup)"
   },
   {
    "date": "2026-10-30",
    "day": "Fri 30",
    "start": "15:30",
-   "end": "16:45",
-   "title": "Open Source House Stage"
+   "end": "15:55",
+   "title": "SAT - Session 2"
+  },
+  {
+   "date": "2026-10-30",
+   "day": "Fri 30",
+   "start": "15:55",
+   "end": "16:20",
+   "title": "SAT - Session 3"
   },
   {
    "date": "2026-10-30",
    "day": "Fri 30",
    "start": "16:45",
+   "end": "17:10",
+   "title": "Sky Valley"
+  },
+  {
+   "date": "2026-10-30",
+   "day": "Fri 30",
+   "start": "17:10",
    "end": "17:35",
-   "title": "Open Source House Stage"
+   "title": "Community Lightning Talks (open signup)"
   }
  ],
  "ev-doha-debates": [
