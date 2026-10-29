@@ -26,7 +26,8 @@
    "id": 165579,
    "name": "AUTO",
    "kind": "art",
-   "api_location": ""
+   "api_location": "",
+   "place": "art-auto"
   },
   {
    "id": 165571,
