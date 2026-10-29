@@ -97,27 +97,67 @@ const REFS = Object.entries(NAMES).flatMap(([id, e]) =>
    in it, so arriving there answers both where and when at once.
    The day goes in as an alias, so "Thu 29" pulls up that day's programme.
    The room name deliberately does NOT, or searching a room would return the
-   room and then every session inside it. */
+   room and then every session inside it.
+   A lab says so, and answers to «lab»: the app gives labs a tab of their own
+   and people ask for them by that name (2026-10-29). */
+const sessionBadge = x => x.lab ? 'Lab' : 'Session';
+const sessionAlias = x => x.day + (x.lab ? ' Lab' : '');
 const SESSION_HITS = Object.entries(SESSIONS).flatMap(([id, list]) => {
   const f = D.floors.find(x => (x.rooms||[]).some(r => r.id === id));
   /* The Music Stage's sessions hang from the stage itself, a piece of the kit:
      they land on its card, on their day. */
   const e = !f && EVENT.find(x => x.id === id && x.poly);
   if(e) return list.map(x => ({
-    label: x.title, badge: 'Session', date: x.date, alias: x.day,
+    label: x.title, badge: sessionBadge(x), date: x.date, alias: sessionAlias(x),
     sub: x.day + ' · ' + x.start + '–' + x.end + ' · ' + e.label,
     poly: e.poly, data: {id: e.id, kind: 'event', name: e.label, h: e.h, est: true, ev: e}
   }));
   if(!f) return [];
   const r = f.rooms.find(x => x.id === id);
   return list.map(x => ({
-    label: x.title, badge: 'Session',
+    label: x.title, badge: sessionBadge(x),
     sub: x.day + ' · ' + x.start + '–' + x.end + ' · ' + r.name +
          ' · ' + featLabel(f.feat),
-    poly: r.poly, floor: f, alias: x.day,
+    poly: r.poly, floor: f, alias: sessionAlias(x),
     data: {kind:'room', name:r.name, area:r.area, id:r.id}
   }));
 });
+
+/* Booths and art pieces land the same way: on their room's plan, or on their
+   piece of the kit. People ask for them by name at the festival, and the
+   programme does not have them (2026-10-29). The booths change every day (the
+   organisation's list), so the line underneath starts with which days and at
+   which numbered position, then the place the way the app says it, if it does.
+   The days and the organisation behind a booth (its logo in the app) are
+   searchable too: people ask for eQualitie, not «Rewilding the Net». */
+const boothWhen = b => {
+  if(!b.when) return '';
+  const p = b.when[0].position;
+  return b.when.every(w => w.position === p)
+    ? b.when.map(w => w.day).join(', ') + ' · position ' + p
+    : b.when.map(w => w.day + ' (position ' + w.position + ')').join(', ');
+};
+const BOOTH_HITS = BOOTHS.map(b => {
+  const badge = b.kind === 'art' ? 'Art' : 'Booth';
+  const alias = [...(b.when || []).map(w => w.day), b.alias].filter(Boolean).join(' ');
+  /* A piece of kit drawn on a room's plan lands on that room. */
+  const e = EVENT.find(x => x.id === b.place);
+  const room = e && !e.poly ? e.room : b.place;
+  const f = D.floors.find(x => (x.rooms||[]).some(r => r.id === room));
+  if(f){
+    const r = f.rooms.find(x => x.id === room);
+    return {label: b.name, badge, alias,
+            sub: [boothWhen(b), b.where, b.where ? '' : codeOf(r.id), r.name, featLabel(f.feat)]
+                   .filter(Boolean).join(' · '),
+            poly: r.poly, floor: f,
+            data: {kind:'room', name:r.name, area:r.area, id:r.id}};
+  }
+  if(e && e.poly) return {label: b.name, badge, alias,
+    sub: [boothWhen(b), b.where, b.where ? '' : codeOf(e.id), e.label,
+          outsideLine(e.poly) ? OUTSIDE_SPACE : ''].filter(Boolean).join(' · '),
+    poly: e.poly, data: {id: e.id, kind: 'event', name: e.label, h: e.h, est: true, ev: e}};
+  return null;
+}).filter(Boolean);
 
 const INDEX = [
   ...uniq.values(),
@@ -166,6 +206,7 @@ const INDEX = [
       sub:'Room · ' + (codeOf(r.id) ? codeOf(r.id) + ' · ' : '') + featLabel(f.feat) + ' · floor ' + f.level,
       poly:r.poly, floor:f,
       data:{kind:'room', name:r.name, area:r.area, id:r.id}}))),
+  ...BOOTH_HITS,
   /* Last, so a building or a room outranks a talk that happens in it. */
   ...SESSION_HITS
 ];
@@ -271,7 +312,7 @@ function grader(q){
 function runSearch(){
   const q = fold($('#q').value.trim());
   const box = $('#results');
-  if(!q){ hits = []; box.innerHTML = '<p>Search for buildings, rooms and sessions</p>'; return; }
+  if(!q){ hits = []; box.innerHTML = '<p>Search for buildings, rooms, sessions and booths</p>'; return; }
   const grade = grader(q);
   /* The index order is the tie-break, not the sort: within one grade a building
      still outranks a room and a room still outranks a talk that happens in it,

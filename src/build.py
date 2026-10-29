@@ -29,7 +29,7 @@ notice saying it is unofficial. Everything about it lives in public_version.py
 and public/; the two builds above come out exactly as they did without it.
 Its bench: tools/with-chrome.sh node tools/check-public.js
 """
-import json, re, shutil, subprocess, sys, pathlib, tempfile, urllib.parse
+import datetime, json, re, shutil, subprocess, sys, pathlib, tempfile, urllib.parse
 from minify import minify, minify_js
 
 here = pathlib.Path(__file__).parent
@@ -327,6 +327,36 @@ def sessions(path):
         sys.exit(f'{path.name}: these rooms do not exist in the model: ' + ', '.join(orphans))
     return d
 
+def booths(path):
+    """The festival's booths and art pieces, listed by read-booths.py from the
+    app and placed by hand. Only the placed ones reach the viewer, and a place
+    has to be a room or a piece of the kit that exists: a booth hung from a
+    re-traced room id would vanish from the search without a word."""
+    d = by_hand(path, 'it is the booths, run python3 read-booths.py --write')
+    rooms = {r['id'] for f in json.loads(MODEL)['floors'] for r in f['rooms']}
+    rooms |= {it['id'] for it in EVENT}
+    rows = [b for b in d.get('booths', []) if b.get('place')]
+    festival = {'2026-10-28', '2026-10-29', '2026-10-30'}
+    for msg, found in (
+            ('these places do not exist in the model', [f"{b['name']} → {b['place']}" for b in rows
+                                                       if b['place'] not in rooms]),
+            ("'kind' is booth or art", [b['name'] for b in rows if b.get('kind') not in ('booth', 'art')]),
+            ("'name' is missing", [str(b.get('id')) for b in rows if not b.get('name')]),
+            ("'days' maps a festival date to a position number",
+             [b['name'] for b in rows if any(k not in festival or not isinstance(v, int) or v < 1
+                                             for k, v in (b.get('days') or {}).items())])):
+        if found:
+            sys.exit(f'{path.name}: {msg}: ' + ', '.join(found))
+    # The booths change every day (the organisation's list, 2026-10-29): each
+    # day goes with its name, as the programme writes it, and its position.
+    def when(days):
+        return [{'date': k, 'position': v,
+                 'day': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][
+                         datetime.date.fromisoformat(k).weekday()] + ' ' + str(int(k[-2:]))}
+                for k, v in sorted(days.items())]
+    return [{**{k: b[k] for k in ('name', 'kind', 'where', 'place', 'alias') if b.get(k)},
+             **({'when': when(b['days'])} if b.get('days') else {})} for b in rows]
+
 def venue(path, event_items):
     """The venue as the organisers name it (A1, B3, D4), against what was traced.
     Nothing here reaches the viewer: it is the table the programme hangs from,
@@ -473,7 +503,8 @@ parts = {
     '__DATA__':     MODEL,
     '__NAMES__':  json.dumps(names(here / 'names.json'), ensure_ascii=False),
     '__SESSIONS__': json.dumps(sessions(here / 'sessions.json'), ensure_ascii=False),
-    '__VIEWS__':   json.dumps(views(here / 'views.json'), ensure_ascii=False),
+    '__BOOTHS__':  json.dumps(booths(here / 'booths.json'), ensure_ascii=False),
+    '__VIEWS__':  json.dumps(views(here / 'views.json'), ensure_ascii=False),
     '__EVENT__':   json.dumps(EVENT, ensure_ascii=False),
     '__MOZFEST__':  json.dumps(MOZFEST, ensure_ascii=False),
     # The walking grid and the public doors the viewer's route search uses:
@@ -509,7 +540,21 @@ if PUBLIC:
     parts = public_version.data(parts)
 
 # One pass, so a payload that happens to contain another marker cannot eat it.
-html = re.sub('|'.join(parts), lambda m: parts[m.group()], tpl)
+# The data goes inside our <script>, and part of it is written by people
+# outside: session titles by the organisation, booth names by each exhibitor.
+# A «</script>» in one of them would close the script there and run whatever
+# follows on both published pages. So <, > and & go as \u escapes, which JSON
+# only ever holds inside strings and JS reads back as the same characters, and
+# so do the two line separators. Here, at the very end, and not when each
+# payload is made: public_version.data() matches ids in the plain JSON.
+# Everything is escaped except what is code or markup: a new payload left off
+# this list breaks loudly in the tests instead of going out unescaped.
+NOT_DATA = {'__PLAN2D__', '__THREE_JS__', '__FONTS__', '__LOGO__', '__FAVICON__'}
+def script_safe(s):
+    return (s.replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026')
+             .replace('\u2028', '\\u2028').replace('\u2029', '\\u2029'))
+html = re.sub('|'.join(parts), lambda m: parts[m.group()] if m.group() in NOT_DATA
+              else script_safe(parts[m.group()]), tpl)
 
 # And a last look before it is written: a public file is published for good.
 if PUBLIC:
@@ -526,6 +571,7 @@ out.write_text(html)
 D = json.loads(parts['__DATA__'])
 N = json.loads(parts['__NAMES__'])
 S = json.loads(parts['__SESSIONS__'])
+BO = json.loads(parts['__BOOTHS__'])
 V = json.loads(parts['__VIEWS__'])
 EV = json.loads(parts['__EVENT__'])
 VOL = json.loads(parts['__STATIONS__'])
@@ -536,7 +582,7 @@ n_sessions  = sum(len(v) for v in S.values())
 indoors  = sum(1 for p in VOL if p.get('room'))
 print(f"{out}  ·  {len(D['vols'])} volumes, {len(D['openings'])} openings, "
       f"{len(D['floors'])} floors  ·  {len(N)} names ({unconfirmed} to confirm)"
-      f"  ·  {n_sessions} sessions in {len(S)} rooms  ·  {len(V)} views"
+      f"  ·  {n_sessions} sessions in {len(S)} rooms  ·  {len(BO)} booths  ·  {len(V)} views"
       f"  ·  {len(EV)} event items"
       f"  ·  {len(VOL)} stations ({indoors} indoors)"
       f"  ·  {len(ROUTES['doors'])} doors, grid {ROUTES['width']}×{ROUTES['height']}"

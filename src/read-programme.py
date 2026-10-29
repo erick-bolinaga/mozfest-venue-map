@@ -28,6 +28,7 @@ longer needed.
     --check          read the API, compare with sessions.json, write nothing
     --write          write sessions.json
     --from FILE      read from a saved dump instead of the network, to work without one
+    --force          write even if more than five sessions would go at once
 """
 import json, pathlib, re, sys, urllib.request, collections, datetime
 
@@ -93,7 +94,10 @@ def row(s):
             'day':   f'{WEEKDAYS[start.weekday()]} {start.day}',
             'start': start.strftime('%H:%M'),
             'end':    end.strftime('%H:%M'),
-            'title': (s.get('title') or '').strip()}
+            'title': (s.get('title') or '').strip(),
+            # The app's «Labs» tab is the WORKSHOP format (2026-10-29: the 28
+            # labs in Erick's screenshots, all WORKSHOP, and the 29th between two).
+            **({'lab': True} if s.get('format') == 'WORKSHOP' else {})}
 
 
 def convert(data, by_code, by_name, skip=()):
@@ -182,6 +186,14 @@ def main():
                       f'not «{r.get("title", "")[:56]}»')
             else:
                 print(f'     {sid}  still in the API: {r["title"][:56]}')
+
+    # During the festival the API sometimes answers with only the sessions still
+    # to come: on 2026-10-29 at 11:30 one call brought 102 of 163, the next one
+    # 163 again, and --write took the 61 already held out of sessions.json.
+    # The organisation removes one or two at a time; dozens at once is the API.
+    if mode == '--write' and len(a - b) > 5 and '--force' not in sys.argv:
+        sys.exit(f'{len(a - b)} sessions would go at once: the API sometimes returns only the ones '
+                 f'still to come. Nothing written; run it again, and --force if it is real')
 
     if mode == '--write':
         out = {'_readme': [

@@ -166,6 +166,9 @@ def data(parts):
     hidden = {it['id'] for it in EV} - {it['id'] for it in kept}
     EV = kept
     MZ = {k: v for k, v in MZ.items() if k not in hidden}
+    # And a booth standing on hidden kit goes with it.
+    p['__BOOTHS__'] = json.dumps([b for b in json.loads(p['__BOOTHS__']) if b['place'] not in hidden],
+                                 ensure_ascii=False)
 
     # Staff-only: the shape stays, the name and the id go. A crew id can carry
     # a person's name (it did), so every one becomes staff-N, everywhere.
@@ -209,7 +212,7 @@ def data(parts):
 
 
 # The payloads that are data, as opposed to code (three.js, plan2d, fonts, logo).
-DATA_KEYS = ['__DATA__', '__NAMES__', '__SESSIONS__', '__VIEWS__', '__EVENT__',
+DATA_KEYS = ['__DATA__', '__NAMES__', '__SESSIONS__', '__BOOTHS__', '__VIEWS__', '__EVENT__',
          '__MOZFEST__', '__ROUTES__', '__STATIONS__',
          '__STATIONS_README__']
 NAMESPACES = {'http://www.w3.org/2000/svg', 'http://www.w3.org/1999/xhtml'}

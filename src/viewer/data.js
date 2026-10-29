@@ -47,6 +47,10 @@ const NAMES = __NAMES__;
    a room the model does not have, because a session filed under a room nobody
    can reach simply never appears. */
 const SESSIONS = __SESSIONS__;
+/* The booths and art pieces of the app's Expo, from src/booths.json: the list
+   is the API's, where each one stands is by hand (2026-10-29). Only the placed
+   ones arrive, each with the room or piece of kit it hangs from. */
+const BOOTHS = __BOOTHS__;
 /* What MozFest calls each traced room, from src/venue.json.
    The venue's name and MozFest's are two names for the same room — Aula 9 is
    Escolta, and Rosa's foyer is D2 — and which one is which matters when

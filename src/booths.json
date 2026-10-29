@@ -1,0 +1,538 @@
+{
+ "_readme": "The festival's booths and art pieces from the public API (read-booths.py); 'where' and 'place', where each one stands, are written by hand.",
+ "booths": [
+  {
+   "id": 165537,
+   "name": "[En]Tangled Up in Blue",
+   "kind": "art",
+   "api_location": ""
+  },
+  {
+   "id": 169432,
+   "name": "Alterwild",
+   "kind": "art",
+   "api_location": "",
+   "where": "F3 Art Room",
+   "place": "r-01-b-salvia-room-1"
+  },
+  {
+   "id": 169430,
+   "name": "Antidotes for Subaerial Sonic Occupation",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-02-b-salvia-art-space"
+  },
+  {
+   "id": 165579,
+   "name": "AUTO",
+   "kind": "art",
+   "api_location": ""
+  },
+  {
+   "id": 165571,
+   "name": "Bananaland (rojo, blanco, azul y rojo)",
+   "kind": "art",
+   "api_location": "",
+   "where": "D3 Foyer",
+   "place": "r-03-b-rosa-workshop"
+  },
+  {
+   "id": 165583,
+   "name": "Believe The Feed: A Deepfake Archive",
+   "kind": "art",
+   "api_location": "",
+   "where": "D3 Foyer",
+   "place": "r-03-b-rosa-workshop"
+  },
+  {
+   "id": 165568,
+   "name": "Beyond Carbon",
+   "kind": "art",
+   "api_location": "",
+   "place": "ev-art-gallery"
+  },
+  {
+   "id": 169442,
+   "name": "BODY AS ARCHIVE: Woman, Life, Freedom",
+   "kind": "art",
+   "api_location": "",
+   "place": "ev-art-gallery"
+  },
+  {
+   "id": 165538,
+   "name": "Calling The Spirit Back From Wandering The Earth: People Powered Portals",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-01-b-rosa"
+  },
+  {
+   "id": 165576,
+   "name": "Engines of Mischief",
+   "kind": "art",
+   "api_location": "",
+   "place": "ev-art-gallery"
+  },
+  {
+   "id": "hand-enter-the-qubit",
+   "name": "Enter The Qubit by Quantum Village",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-02-b-salvia-art-space"
+  },
+  {
+   "id": 165542,
+   "name": "For Those Who Come After",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-01-b-rosa"
+  },
+  {
+   "id": 171970,
+   "name": "From Above, From Within",
+   "kind": "art",
+   "api_location": "",
+   "place": "ev-art-gallery"
+  },
+  {
+   "id": 165529,
+   "name": "Kuchema The Gathering",
+   "kind": "art",
+   "api_location": "",
+   "place": "ev-art-gallery"
+  },
+  {
+   "id": 165575,
+   "name": "Love Poem Typewriter",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-01-b-rosa"
+  },
+  {
+   "id": 164707,
+   "name": "Love Robots",
+   "kind": "art",
+   "api_location": "F1 Art Space",
+   "place": "r-02-b-salvia-art-space"
+  },
+  {
+   "id": 165585,
+   "name": "Machine Yearning - Fine-tuning a public AI LLM to learn to yearn",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-02-b-salvia-art-space"
+  },
+  {
+   "id": 165541,
+   "name": "Maps of Military AI: Colonial lineages, materialities, and sites of solidarity",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-01-b-rosa"
+  },
+  {
+   "id": 169451,
+   "name": "Messages to a post-human earth",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-01-b-rosa"
+  },
+  {
+   "id": 165540,
+   "name": "Playing, Dreaming, Worldwilding",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-02-b-salvia-art-space"
+  },
+  {
+   "id": 165573,
+   "name": "Run Dry: Digital Infrastructure and Landscape Loss in Mesa, Arizona",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-01-b-rosa"
+  },
+  {
+   "id": 165534,
+   "name": "Simulated Storytelling",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-02-b-salvia-art-space"
+  },
+  {
+   "id": 165581,
+   "name": "Singulars (Multi-poet)",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-01-b-rosa"
+  },
+  {
+   "id": 174330,
+   "name": "Sound of the silenced: voices from the connectivity crisis",
+   "kind": "art",
+   "api_location": ""
+  },
+  {
+   "id": 165578,
+   "name": "Tablet",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-02-b-salvia-art-space"
+  },
+  {
+   "id": 165535,
+   "name": "The Earth Laughs in Flowers",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-02-b-salvia-art-space"
+  },
+  {
+   "id": 165570,
+   "name": "The Ecology of Missing Data:  Mapping Silence Across Türkiye",
+   "kind": "art",
+   "api_location": "",
+   "where": "D3 Foyer",
+   "place": "r-03-b-rosa-workshop"
+  },
+  {
+   "id": 165572,
+   "name": "The Meadow: Tending the Independent Technology Research Ecosystem",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-01-b-rosa"
+  },
+  {
+   "id": 165577,
+   "name": "The Sankofa Protocol",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-02-b-salvia-art-space"
+  },
+  {
+   "id": 165569,
+   "name": "Wages for Art(work)",
+   "kind": "art",
+   "api_location": "",
+   "where": "D3 Foyer",
+   "place": "r-03-b-rosa-workshop"
+  },
+  {
+   "id": 165580,
+   "name": "We Called It Wilding: How Memory Outruns the Machine",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-01-b-rosa"
+  },
+  {
+   "id": 165539,
+   "name": "What We Tell AI: A Confession Booth",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-01-b-rosa"
+  },
+  {
+   "id": 169448,
+   "name": "Wikipedia: Play & ride!",
+   "kind": "art",
+   "api_location": "",
+   "place": "r-02-b-salvia-art-space"
+  },
+  {
+   "id": 173805,
+   "name": "YakuMama (MotherWater)",
+   "kind": "art",
+   "api_location": "",
+   "place": "ev-art-gallery"
+  },
+  {
+   "id": 165650,
+   "name": "AI-AI-AY",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-29": 8
+   }
+  },
+  {
+   "id": 173572,
+   "name": "Awana Digital",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-28": 7
+   }
+  },
+  {
+   "id": 172895,
+   "name": "Barcelona Permacomputing Club",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-29": 2
+   }
+  },
+  {
+   "id": 165644,
+   "name": "Cofacts.ai",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-28": 5
+   }
+  },
+  {
+   "id": 165635,
+   "name": "Collective Dreaming",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-30": 1
+   }
+  },
+  {
+   "id": 172114,
+   "name": "FREE Leadership Coaching with Spring",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-28": 10,
+    "2026-10-29": 10,
+    "2026-10-30": 10
+   },
+   "alias": "Wilding your leadership"
+  },
+  {
+   "id": 169542,
+   "name": "GilaNet",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-28": 12,
+    "2026-10-29": 12,
+    "2026-10-30": 12
+   },
+   "alias": "GliaNet"
+  },
+  {
+   "id": 171965,
+   "name": "Guerrilla Media Collective",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-28": 9,
+    "2026-10-29": 9,
+    "2026-10-30": 9
+   }
+  },
+  {
+   "id": 165643,
+   "name": "In the Wild, Those Who Cooperate Thrive",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-28": 4,
+    "2026-10-29": 4
+   },
+   "alias": "Patio.coop"
+  },
+  {
+   "id": 165653,
+   "name": "Iran Open Data",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-28": 3
+   }
+  },
+  {
+   "id": 165604,
+   "name": "KARA KUTU",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-28": 8
+   }
+  },
+  {
+   "id": 165649,
+   "name": "Man in the loop",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-28": 6
+   },
+   "alias": "info.nodes"
+  },
+  {
+   "id": 165488,
+   "name": "Mozilla Foundation Archive",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-30": 6
+   }
+  },
+  {
+   "id": 169541,
+   "name": "OpenNews + Emergency Mode for News",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-29": 5
+   }
+  },
+  {
+   "id": 165637,
+   "name": "Our Media, Our Means",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-30": 7
+   },
+   "alias": "OpenArchive"
+  },
+  {
+   "id": 165490,
+   "name": "Public House for the Future",
+   "kind": "booth",
+   "api_location": "",
+   "alias": "Stanford d.school"
+  },
+  {
+   "id": 165652,
+   "name": "ResourceFull",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-30": 5
+   }
+  },
+  {
+   "id": 165645,
+   "name": "Rewilding the Net",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-29": 7
+   },
+   "alias": "eQualitie"
+  },
+  {
+   "id": 165607,
+   "name": "Sign Language for Equity",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-30": 4
+   },
+   "alias": "Data-Pop Alliance"
+  },
+  {
+   "id": 165606,
+   "name": "Slow Circuits",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-29": 6
+   }
+  },
+  {
+   "id": 165646,
+   "name": "SoilHive",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-29": 1
+   },
+   "alias": "Varda"
+  },
+  {
+   "id": 165648,
+   "name": "Suwali",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-28": 2
+   },
+   "alias": "Meedan"
+  },
+  {
+   "id": "hand-tech-for-palestine",
+   "name": "Tech for Palestine",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-30": 8
+   }
+  },
+  {
+   "id": 165489,
+   "name": "Tech Platforms In Action",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-29": 3
+   },
+   "alias": "Tech Platforms Showcase, Common Voice"
+  },
+  {
+   "id": 165605,
+   "name": "Thaura",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-28": 1
+   }
+  },
+  {
+   "id": 165651,
+   "name": "Touch as a Decentralized Interface",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-30": 2
+   },
+   "alias": "Enigma"
+  },
+  {
+   "id": 165642,
+   "name": "Who is your adversary now?",
+   "kind": "booth",
+   "api_location": "",
+   "place": "r-01-b-rosa",
+   "days": {
+    "2026-10-30": 3
+   },
+   "alias": "Vita Activa"
+  },
+  {
+   "id": 174874,
+   "name": "Zine Station: A Field Guide to Wilding Technology",
+   "kind": "booth",
+   "api_location": "D1 Foyer",
+   "place": "r-01-b-rosa"
+  }
+ ]
+}

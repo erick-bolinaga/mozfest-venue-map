@@ -200,6 +200,13 @@
    "start": "13:30",
    "end": "14:30",
    "title": "Clarissa Bitar Musical Performance"
+  },
+  {
+   "date": "2026-10-30",
+   "day": "Fri 30",
+   "start": "15:30",
+   "end": "16:30",
+   "title": "The Platform That Saved Me, The Platform That Arrested Me"
   }
  ],
  "r-01-b-lotus-main-hall": [
@@ -387,7 +394,8 @@
    "day": "Wed 28",
    "start": "14:15",
    "end": "15:15",
-   "title": "Clay Play: Artifacts of a Digital World"
+   "title": "Clay Play: Artifacts of a Digital World",
+   "lab": true
   },
   {
    "date": "2026-10-28",
@@ -408,7 +416,8 @@
    "day": "Thu 29",
    "start": "10:00",
    "end": "11:00",
-   "title": "The Witch and the Engineer: Hybrid Divination for the AI Age"
+   "title": "The Witch and the Engineer: Hybrid Divination for the AI Age",
+   "lab": true
   },
   {
    "date": "2026-10-29",
@@ -422,7 +431,8 @@
    "day": "Thu 29",
    "start": "15:30",
    "end": "16:30",
-   "title": "1000 Unread Emails: a Collective Junk Mail Poetry Lab"
+   "title": "1000 Unread Emails: a Collective Junk Mail Poetry Lab",
+   "lab": true
   },
   {
    "date": "2026-10-29",
@@ -466,56 +476,64 @@
    "day": "Wed 28",
    "start": "10:00",
    "end": "11:00",
-   "title": "Energy as a Living Commons - Rewilding Community Power Systems"
+   "title": "Energy as a Living Commons - Rewilding Community Power Systems",
+   "lab": true
   },
   {
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "12:30",
    "end": "13:30",
-   "title": "Birdsong Amulet: an accessory, an instrument and an electronic familiar"
+   "title": "Birdsong Amulet: an accessory, an instrument and an electronic familiar",
+   "lab": true
   },
   {
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "15:30",
    "end": "16:30",
-   "title": "Mapping Nature Together: Community-Owned Tools for Citizen Bird Science"
+   "title": "Mapping Nature Together: Community-Owned Tools for Citizen Bird Science",
+   "lab": true
   },
   {
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "16:45",
    "end": "17:45",
-   "title": "Making music with strudel.cc"
+   "title": "Making music with strudel.cc",
+   "lab": true
   },
   {
    "date": "2026-10-29",
    "day": "Thu 29",
    "start": "10:00",
    "end": "11:00",
-   "title": "Free your data! Using an MCP to let people access your data in new ways."
+   "title": "Free your data! Using an MCP to let people access your data in new ways.",
+   "lab": true
   },
   {
    "date": "2026-10-29",
    "day": "Thu 29",
    "start": "12:30",
    "end": "13:30",
-   "title": "Who Keeps Digital Society Running? Uncovering the Hidden Care Work Behind Tech"
+   "title": "Who Keeps Digital Society Running? Uncovering the Hidden Care Work Behind Tech",
+   "lab": true
   },
   {
    "date": "2026-10-29",
    "day": "Thu 29",
    "start": "15:30",
    "end": "16:30",
-   "title": "Navigating A Disempowering System: How African CSOs Shape Data Policy"
+   "title": "Navigating A Disempowering System: How African CSOs Shape Data Policy",
+   "lab": true
   },
   {
    "date": "2026-10-29",
    "day": "Thu 29",
    "start": "16:45",
    "end": "17:45",
-   "title": "Indigenous Knowledge & Community Governance: Wilding AI Constitutions"
+   "title": "Indigenous Knowledge & Community Governance: Wilding AI Constitutions",
+   "lab": true
   },
   {
    "date": "2026-10-30",
@@ -529,7 +547,8 @@
    "day": "Fri 30",
    "start": "12:30",
    "end": "13:30",
-   "title": "No Contract, No Cameras: A Procurement Power Lab"
+   "title": "No Contract, No Cameras: A Procurement Power Lab",
+   "lab": true
   },
   {
    "date": "2026-10-30",
@@ -543,7 +562,8 @@
    "day": "Fri 30",
    "start": "15:30",
    "end": "16:30",
-   "title": "A Phenology of Data Centers: Reading Infrastructure as an Ecological Actor"
+   "title": "A Phenology of Data Centers: Reading Infrastructure as an Ecological Actor",
+   "lab": true
   },
   {
    "date": "2026-10-30",
@@ -645,28 +665,32 @@
    "day": "Wed 28",
    "start": "10:00",
    "end": "11:00",
-   "title": "Attack the AI. Then Defend It."
+   "title": "Attack the AI. Then Defend It.",
+   "lab": true
   },
   {
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "12:30",
    "end": "13:30",
-   "title": "Who Holds the Evidence? Self-Hosted, Open-Source AI for Human Rights"
+   "title": "Who Holds the Evidence? Self-Hosted, Open-Source AI for Human Rights",
+   "lab": true
   },
   {
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "15:30",
    "end": "16:30",
-   "title": "Into the Wild: Growing Organic Technology"
+   "title": "Into the Wild: Growing Organic Technology",
+   "lab": true
   },
   {
    "date": "2026-10-28",
    "day": "Wed 28",
    "start": "16:45",
    "end": "17:45",
-   "title": "The Art of Cyberbullying: a Workshop on Making Authoritarians Dread the Internet"
+   "title": "The Art of Cyberbullying: a Workshop on Making Authoritarians Dread the Internet",
+   "lab": true
   },
   {
    "date": "2026-10-29",
@@ -680,7 +704,8 @@
    "day": "Thu 29",
    "start": "12:30",
    "end": "13:30",
-   "title": "Expanding the Map: Local Knowledge Systems for Technology Builders"
+   "title": "Expanding the Map: Local Knowledge Systems for Technology Builders",
+   "lab": true
   },
   {
    "date": "2026-10-29",
@@ -694,7 +719,8 @@
    "day": "Thu 29",
    "start": "15:30",
    "end": "16:30",
-   "title": "Data Center Bombs - community-led open-data mapping of Big Tech infrastructure"
+   "title": "Data Center Bombs - community-led open-data mapping of Big Tech infrastructure",
+   "lab": true
   },
   {
    "date": "2026-10-29",
@@ -708,21 +734,24 @@
    "day": "Fri 30",
    "start": "10:00",
    "end": "11:00",
-   "title": "The Milpa Network. A Tactile Audit of Representational Bias in AI"
+   "title": "The Milpa Network. A Tactile Audit of Representational Bias in AI",
+   "lab": true
   },
   {
    "date": "2026-10-30",
    "day": "Fri 30",
    "start": "12:30",
    "end": "13:30",
-   "title": "Frugal AI grows like wild herbs"
+   "title": "Frugal AI grows like wild herbs",
+   "lab": true
   },
   {
    "date": "2026-10-30",
    "day": "Fri 30",
    "start": "15:30",
    "end": "16:30",
-   "title": "Map Without Barriers: How ChatMap Puts Open Mapping in Everyone's Hands"
+   "title": "Map Without Barriers: How ChatMap Puts Open Mapping in Everyone's Hands",
+   "lab": true
   },
   {
    "date": "2026-10-30",
@@ -816,13 +845,6 @@
    "start": "15:30",
    "end": "16:30",
    "title": "Rewilding Our Gardens: Communal Governance in Tech Accountability Projects"
-  },
-  {
-   "date": "2026-10-30",
-   "day": "Fri 30",
-   "start": "16:45",
-   "end": "17:45",
-   "title": "Privacy Likes Company"
   }
  ],
  "r-02-b-fontanet-session-room": [
@@ -831,7 +853,8 @@
    "day": "Wed 28",
    "start": "10:00",
    "end": "11:00",
-   "title": "Hitting the wall in political conversations? Explore art and science of bridging"
+   "title": "Hitting the wall in political conversations? Explore art and science of bridging",
+   "lab": true
   },
   {
    "date": "2026-10-28",
@@ -873,35 +896,40 @@
    "day": "Fri 30",
    "start": "10:00",
    "end": "11:00",
-   "title": "Legislative Tech Theater: Testing the Technology We Need"
+   "title": "Legislative Tech Theater: Testing the Technology We Need",
+   "lab": true
   },
   {
    "date": "2026-10-30",
    "day": "Fri 30",
    "start": "12:30",
    "end": "13:30",
-   "title": "ConectAí: a peer education lab from brazilian public schools"
+   "title": "ConectAí: a peer education lab from brazilian public schools",
+   "lab": true
   },
   {
    "date": "2026-10-30",
    "day": "Fri 30",
    "start": "14:15",
    "end": "15:15",
-   "title": "Rooted Intelligence: What Happens When AI Literacy Grows From Within"
+   "title": "Rooted Intelligence: What Happens When AI Literacy Grows From Within",
+   "lab": true
   },
   {
    "date": "2026-10-30",
    "day": "Fri 30",
    "start": "15:30",
    "end": "16:30",
-   "title": "Sonic Wilding: Grassroots Digital Archives for Sudanese Heritage"
+   "title": "Sonic Wilding: Grassroots Digital Archives for Sudanese Heritage",
+   "lab": true
   },
   {
    "date": "2026-10-30",
    "day": "Fri 30",
    "start": "16:45",
    "end": "17:45",
-   "title": "Fables and Futures: Stories, Technology and Society"
+   "title": "Fables and Futures: Stories, Technology and Society",
+   "lab": true
   }
  ],
  "r-03-b-aster-aula-2-aster-workshop": [
@@ -1017,7 +1045,8 @@
    "day": "Thu 29",
    "start": "16:45",
    "end": "17:45",
-   "title": "AWID Feminist Movement Hubs: Convene locally, connect globally"
+   "title": "AWID Feminist Movement Hubs: Convene locally, connect globally",
+   "lab": true
   },
   {
    "date": "2026-10-30",
@@ -1125,6 +1154,13 @@
    "start": "15:30",
    "end": "16:30",
    "title": "Community Design Principles Lab with Out in Tech"
+  },
+  {
+   "date": "2026-10-30",
+   "day": "Fri 30",
+   "start": "16:45",
+   "end": "17:45",
+   "title": "Privacy x Queer Desire"
   }
  ],
  "r-04-b-aster-aula-gran": [
