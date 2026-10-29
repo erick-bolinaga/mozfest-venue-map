@@ -138,6 +138,53 @@ function sessionsIn(feat){
   return out.sort((a,b) => a.date.localeCompare(b.date) || a.start.localeCompare(b.start));
 }
 
+/* ---------- the programme against the clock ----------
+   A programme read at the festival is read against the time of day: what is
+   over is struck through and faded, what is on now or still to come today
+   stands out, and the days ahead carry a quieter version of the same mark
+   (Erick, 2026-10-28, from the site).
+
+   Barcelona's clock, not the device's. The programme is written in local
+   time, and a phone still set to the zone it flew in from would strike out
+   the wrong half of the day. ?dev=1&now=2026-10-29T12:00 stands the clock
+   wherever it is asked to, which is the only way to look at Friday on a
+   Wednesday; the bench sets clockAt directly. */
+const FEST_CLOCK = new Intl.DateTimeFormat('en-GB', {timeZone:'Europe/Madrid', year:'numeric',
+  month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hourCycle:'h23'});
+let clockAt = (() => {
+  const q = DEV && new URLSearchParams(location.search).get('now');
+  return q && /^\d{4}-\d\d-\d\dT\d\d:\d\d$/.test(q) ? q : null;
+})();
+function festNow(){
+  if(clockAt) return {date: clockAt.slice(0, 10), time: clockAt.slice(11, 16)};
+  const p = {};
+  FEST_CLOCK.formatToParts(new Date()).forEach(x => { p[x.type] = x.value; });
+  return {date: `${p.year}-${p.month}-${p.day}`, time: `${p.hour}:${p.minute}`};
+}
+/* past, now, soon (later today) or ahead (another day). Strings compare
+   because the programme writes every date and hour zero-padded. */
+function sessionWhen(s, now = festNow()){
+  if(s.date !== now.date) return s.date < now.date ? 'past' : 'ahead';
+  return s.end <= now.time ? 'past' : s.start <= now.time ? 'now' : 'soon';
+}
+/* One row of a programme. It carries its own day and hours so the clock can
+   mark it again later without the list being drawn again. `when` arrives
+   escaped. */
+const sesRow = (s, when) =>
+  `<div data-when="${sessionWhen(s)}" data-date="${esc(s.date)}" data-start="${esc(s.start)}"` +
+  ` data-end="${esc(s.end)}"><strong>${esc(s.title)}</strong><span>${when}</span></div>`;
+/* A list left open goes on telling the time: a talk ends while the card is
+   up, and a phone taken out of a pocket wakes to the hour it is now. */
+function markSessions(){
+  const now = festNow();
+  document.querySelectorAll('.ses > [data-date]').forEach(el => {
+    const w = sessionWhen(el.dataset, now);
+    if(el.dataset.when !== w) el.dataset.when = w;
+  });
+}
+setInterval(markSessions, 30000);
+document.addEventListener('visibilitychange', () => { if(!document.hidden) markSessions(); });
+
 /* Tabs, not a toggle. The shell is the one the 2D/3D switch wears, because it
    is the same gesture; what changes is the semantics underneath — aria-selected
    and a tablist, where a switch would say aria-pressed. */
@@ -201,7 +248,11 @@ function sheetParts(feat){
   if(onFloors){
     if(fls.length && !fls.some(f => f.level === sheetTab.level)) sheetTab.level = fls[0].level;
   } else if(!days.some(d => d.date === sheetTab.day)){
-    sheetTab.day = days.length ? days[0].date : null;
+    /* Today, or the next day with something on. Opening on the first day put
+       a list struck through from top to bottom in front of anyone asking on
+       the Thursday. */
+    const today = festNow().date;
+    sheetTab.day = days.length ? (days.find(d => d.date >= today) || days[0]).date : null;
   }
 
   const tabs = sessionsOnly ? '' : `<div class="seg tabs" role="tablist" aria-label="What to show">` +
@@ -230,9 +281,9 @@ function sheetParts(feat){
     subs = subRow('day', days.map(d => ({v:d.date, t:d.day})), day.date, 'Day');
     sig  = 'd:' + days.map(d => d.date).join(',');
     const list = sess.filter(s => s.date === day.date);
-    panel = `<div class="ses">` + list.map(s =>
-      `<div><strong>${esc(s.title)}</strong><span>${esc(s.start)}–${esc(s.end)}` +
-      `${s.room ? ' · ' + esc(s.room.name) : ''}${s.floor && s.floor.name ? ' · ' + esc(s.floor.name) : ''}</span></div>`).join('') +
+    panel = `<div class="ses">` + list.map(s => sesRow(s,
+      `${esc(s.start)}–${esc(s.end)}` +
+      `${s.room ? ' · ' + esc(s.room.name) : ''}${s.floor && s.floor.name ? ' · ' + esc(s.floor.name) : ''}`)).join('') +
       `</div>`;
   }
   return {tabs, onFloors, subs, panel, sig};
@@ -322,7 +373,7 @@ function roomCard(r){
     cardHead(`<h3>${esc(r.name)}</h3><div class="meta">${esc(kind)}</div>` + key, routeButton(`room:${esc(r.id)}`)) + wr +
     (ss.length
       ? `<div class="ses">` + ss.map(s =>
-          `<div><strong>${esc(s.title)}</strong><span>${esc(s.day)} · ${esc(s.start)}–${esc(s.end)}</span></div>`
+          sesRow(s, `${esc(s.day)} · ${esc(s.start)}–${esc(s.end)}`)
         ).join('') + `</div>`
       : `<p class="hint">Nothing programmed in this room.</p>`) +
     `</div>`;

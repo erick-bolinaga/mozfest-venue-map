@@ -509,6 +509,20 @@ dd{margin:0}
 .ses strong{font-size:var(--fs-sm);font-weight:600;color:var(--ink);line-height:1.3}
 .ses span{font-size:var(--fs-xs);color:var(--dim);line-height:1.3;
   font-variant-numeric:tabular-nums}
+/* Where each session stands against the festival's clock (sessionWhen, in
+   panel.js). Over: struck through and faded, still there to be read, because
+   someone always asks what they missed. On now or later today: a bar of the
+   festival's orange hung in the margin, so the titles keep to one column, and
+   the hour in the same orange. Another day: the same bar, quieter. */
+.ses [data-when]{position:relative}
+.ses [data-when="past"]{opacity:.5}
+.ses [data-when="past"] strong{text-decoration:line-through;text-decoration-thickness:1px}
+.ses [data-when="now"]::before,.ses [data-when="soon"]::before,.ses [data-when="ahead"]::before{
+  content:"";position:absolute;left:-.75rem;top:0;bottom:0;width:3px;border-radius:2px;
+  background:var(--route)}
+.ses [data-when="ahead"]::before{background:color-mix(in srgb,var(--route) 35%,transparent)}
+.ses [data-when="now"] span,.ses [data-when="soon"] span{color:var(--route-text)}
+.ses [data-when="now"] span::before{content:"Now · ";font-weight:600}
 /* Inside a room the sessions group by space rather than by rule: with the room
    already named above them, a drawn line adds a boundary the reader does not
    need. The gap between sessions against the gap inside one is what makes them
