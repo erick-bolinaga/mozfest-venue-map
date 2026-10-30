@@ -393,6 +393,9 @@
     },
     "Open Source House Stage": {
       "place": "ev-art-tent (Firefox House)"
+    },
+    "Main Stage Terrace": {
+      "place": "ev-overflow-main-stage"
     }
   }
 }
